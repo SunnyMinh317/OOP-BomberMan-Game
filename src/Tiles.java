@@ -1,2 +1,2 @@
-public class Tiles extends Entity {
+public class Tiles {
 }
