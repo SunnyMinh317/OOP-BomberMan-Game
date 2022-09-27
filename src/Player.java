@@ -22,7 +22,6 @@ public class Player extends Entity {
 
     public void update() {
         if (keyHandler.leftPressed) {
-            System.out.println("PLAYER LEFT");
             x -= SPEED;
         } else if (keyHandler.upPressed) {
             y -= SPEED;

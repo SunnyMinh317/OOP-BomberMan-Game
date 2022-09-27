@@ -2,6 +2,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.io.IOException;
 
 public class GameFrame extends JPanel implements Runnable {
     Thread gameThread;
@@ -10,6 +11,7 @@ public class GameFrame extends JPanel implements Runnable {
     static final int FPS = 60;
     KeyHandler keyHandler = new KeyHandler();
     Player player;
+    Bomb bomb;
 
     GameFrame() {
         this.setPreferredSize(new Dimension(WIDTH, HEIGHT));
@@ -18,6 +20,7 @@ public class GameFrame extends JPanel implements Runnable {
         this.setDoubleBuffered(true);
         this.setFocusable(true);
         player = new Player(keyHandler, this);
+        bomb = new Bomb(player, keyHandler, this);
     }
 
     public void startGameThread() {
@@ -27,18 +30,11 @@ public class GameFrame extends JPanel implements Runnable {
 
     @Override
     public void run() {
-        double drawInterval = 1000000000.0 / FPS;
-        double nextDrawTime = System.nanoTime() + drawInterval;
         while (gameThread != null) {
             update();
             repaint();
             try {
-                double remainingTime = (nextDrawTime - System.nanoTime()) / 1000000;
-                if (remainingTime < 0) {
-                    remainingTime = 0;
-                }
-                Thread.sleep((long) remainingTime);
-                nextDrawTime += drawInterval;
+                Thread.sleep((long) 1000/FPS);
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
@@ -47,11 +43,19 @@ public class GameFrame extends JPanel implements Runnable {
 
     public void update() {
         player.update();
+        bomb.update();
     }
 
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g;
+        if(bomb!=null) {
+            try {
+                bomb.draw(g2,this);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
         player.draw(g2);
         g2.dispose();
     }
