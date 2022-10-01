@@ -1,17 +1,19 @@
 package main.Entity;
 
+import main.Game;
 import main.Input.Keyboard;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.util.Objects;
 
 public class Bomb extends Entity {
     private int timer = 0;
     private boolean placed = false;
     private Keyboard kh;
-    private BufferedImage blast;
+    private static BufferedImage[] bombFrames;
 
     public Bomb(Keyboard kh) {
         timer = 0;
@@ -19,12 +21,14 @@ public class Bomb extends Entity {
         y = 0;
         placed = false;
         this.kh = kh;
-        loadBombImage();
+
     }
 
-    public void loadBombImage() {
+    public static void loadBombImage() {
         try {
-            blast = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/bomb.png")));
+            for (int i = 0; i < 3; i++) {
+                bombFrames[i] = Game.gameTileSheet.getSubimage(i * 16, 3 * 16, 16, 16);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -51,7 +55,7 @@ public class Bomb extends Entity {
 
     public void drawBomb(Graphics2D g) {
         if (placed) {
-            g.drawImage(blast, this.x, this.y, 75, 75, null);
+            g.drawImage(bombFrames[0], this.x, this.y, 48, 48, null);
         }
     }
 }

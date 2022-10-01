@@ -14,12 +14,11 @@ public class GamePanel extends JPanel implements Runnable {
     final int WINDOW_HEIGHT = 624;
 
     BufferedImage view;
-    public Game mainGame = new Game();
     public Thread gameThread;
     public boolean isRunning;
     public Keyboard input = new Keyboard();
-    public Bomber player = new Bomber(this, input);
-    public Bomb boom = new Bomb(input);
+    public Game mainGame = new Game(this, input);
+
 
     public GamePanel() {
         this.setPreferredSize(new Dimension(WINDOW_WIDTH, WINDOW_HEIGHT));
@@ -53,17 +52,14 @@ public class GamePanel extends JPanel implements Runnable {
     }
 
     public void update() {
-        player.updateBomber();
-        boom.updateBomb(player.x, player.y);
+        mainGame.updateGame();
     }
 
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g;
 
-        mainGame.gameMap.drawMap(g2);
-        boom.drawBomb(g2);
-        player.drawBomber(g2);
+        mainGame.drawGame(g2);
 
         g2.dispose();
     }
