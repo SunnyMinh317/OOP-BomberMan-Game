@@ -14,7 +14,8 @@ import java.util.Objects;
 
 public class Game {
     public static final int TILESHEET_BLOCK_SIZE = 16;
-    public ArrayList<Bomb> bombs;
+    private static int currentBombStrength = 1;
+    public ArrayList<Bomb> activeBombs = new ArrayList<Bomb>();
 
     GamePanel gp;
     Keyboard kh;
@@ -27,7 +28,9 @@ public class Game {
         this.gp = gp;
         this.kh = kh;
         loadGameAssets();
+        Bomber.loadBomberSprite();
         player = new Bomber(gp, kh);
+        Bomb.loadBombImage();
     }
 
     private void loadGameAssets() {
@@ -39,11 +42,20 @@ public class Game {
     }
 
     public void updateGame() {
-        player.updateBomber(gameMap.map);
+        player.updateBomber(gameMap.map, activeBombs);
+        for (int i = 0; i < activeBombs.size(); i++) {
+            activeBombs.get(i).updateBomb(activeBombs, gameMap.map, currentBombStrength);
+        }
+        if (kh.pPress) {
+            gameMap.regenerateMap();
+        }
     }
 
     public void drawGame(Graphics2D g) {
         this.gameMap.drawMap(g);
+        for (int i = 0; i < activeBombs.size(); i++) {
+            activeBombs.get(i).drawBomb(g);
+        }
         player.drawBomber(g);
     }
 }

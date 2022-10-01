@@ -54,4 +54,28 @@ public class GameMap {
             }
         }
     }
+
+    public void regenerateMap() {
+        for (int i = 0; i < 13; i++) {
+            for (int j = 0; j < 15; j++) {
+                if (map[i][j] == 2) {
+                    map[i][j] = 0;
+                }
+            }
+        }
+
+        for (int i = 0; i < 13; i++) {
+            for (int j = 0; j < 15; j++) {
+                if (map[i][j] == 0) {
+                    if (new Random().nextInt(10) < 5) {
+                        map[i][j] = 2;
+                    }
+                }
+            }
+        }
+
+        map[1][1] = 0;
+        map[1][2] = 0;
+        map[2][1] = 0;
+    }
 }

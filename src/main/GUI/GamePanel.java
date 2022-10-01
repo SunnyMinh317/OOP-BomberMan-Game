@@ -12,8 +12,6 @@ import main.Input.Keyboard;
 public class GamePanel extends JPanel implements Runnable {
     final int WINDOW_WIDTH = 720;
     final int WINDOW_HEIGHT = 624;
-
-    BufferedImage view;
     public Thread gameThread;
     public boolean isRunning;
     public Keyboard input = new Keyboard();
@@ -29,8 +27,6 @@ public class GamePanel extends JPanel implements Runnable {
     }
 
     public void startGameThread() {
-
-        view = new BufferedImage(WINDOW_WIDTH, WINDOW_HEIGHT, BufferedImage.TYPE_INT_RGB);
         gameThread = new Thread(this);
 
         isRunning = true;

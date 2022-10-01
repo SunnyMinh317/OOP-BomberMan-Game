@@ -5,14 +5,14 @@ public class Entity {
     public int speed;
 
     public Entity() {
-        x = 0;
-        y = 0;
-        speed = 0;
+        this.x = 0;
+        this.y = 0;
+        this.speed = 0;
     }
 
     public Entity(int x, int y) {
-        x = 0;
-        y = 0;
-        speed = 0;
+        this.x = 0;
+        this.y = 0;
+        this.speed = 0;
     }
 }
