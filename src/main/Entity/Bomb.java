@@ -64,6 +64,10 @@ public class Bomb extends Entity {
         }
     }
 
+    private void assessExplodingTiles(int[][] map, int bombStrength) {
+
+    }
+
     public void updateBomb(ArrayList<Bomb> activeBombs, int[][] map, int bombStrength) {
         if (placed) {
             currentBombTick++;

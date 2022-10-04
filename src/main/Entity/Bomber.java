@@ -11,8 +11,6 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 public class Bomber extends Entity {
-
-    public GamePanel gp;
     public Keyboard kh;
 
     private int direction = 0; // 0 = SOUTH, 1 = EAST, 2 = NORTH, 3 = WEST
@@ -30,7 +28,6 @@ public class Bomber extends Entity {
         this.x = 48;
         this.y = 48;
         this.speed = 4;
-        this.gp = gp;
         this.kh = kh;
         this.maxBombs = 50;
     }
@@ -137,6 +134,5 @@ public class Bomber extends Entity {
                 g.drawImage(bomberSpriteDown[currentPlayerFrameIndex], x, y, 48, 48, null);
                 break;
         }
-//        g.drawImage(sCal, x, y, 48, 48, null);
     }
 }
