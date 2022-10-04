@@ -12,10 +12,9 @@ public class Tile extends Entity {
     protected Tile() {
     }
 
-    protected Tile(int x, int y, boolean isSolid) {
+    protected Tile(int x, int y) {
         this.x = x;
         this.y = y;
-        this.isSolid = isSolid;
     }
 
     public void drawTile(Graphics2D g) {
