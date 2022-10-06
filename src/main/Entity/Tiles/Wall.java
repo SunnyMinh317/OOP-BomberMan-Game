@@ -1,7 +1,6 @@
-package main.Level.Tiles;
+package main.Entity.Tiles;
 
 import main.Game;
-import main.Level.Tile;
 
 public class Wall extends Tile {
     public Wall() {

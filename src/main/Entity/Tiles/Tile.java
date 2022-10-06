@@ -1,4 +1,4 @@
-package main.Level;
+package main.Entity.Tiles;
 
 import main.Entity.Entity;
 

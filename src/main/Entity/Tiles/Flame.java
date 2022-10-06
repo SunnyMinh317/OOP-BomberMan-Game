@@ -1,7 +1,7 @@
-package main.Entity;
+package main.Entity.Tiles;
 
 import main.Game;
-import main.Level.Tile;
+import main.Entity.Tiles.Tile;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -12,7 +12,7 @@ public class Flame extends Tile {
     private BufferedImage[] flameTexture = new BufferedImage[4];
     private int currentExplosionTick = 0, explosionAnimInterval = 10, currentExplosionFrameIndex = 0;
 
-    Flame(int x, int y, boolean isEnd, int direction) {
+    public Flame(int x, int y, boolean isEnd, int direction) {
         super(x, y);
         this.isEnd = isEnd;
         this.direction = direction;

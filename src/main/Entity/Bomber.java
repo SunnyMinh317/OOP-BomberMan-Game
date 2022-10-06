@@ -32,7 +32,7 @@ public class Bomber extends Entity {
         this.y = 48;
         this.speed = 4;
         this.kh = kh;
-        this.maxBombs = 30;
+        this.maxBombs = 10;
     }
 
     public static void loadBomberSprite() {

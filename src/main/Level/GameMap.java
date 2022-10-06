@@ -1,8 +1,8 @@
 package main.Level;
 
-import main.Level.Tiles.Brick;
-import main.Level.Tiles.Item;
-import main.Level.Tiles.Wall;
+import main.Entity.Tiles.Brick;
+import main.Entity.Tiles.Item;
+import main.Entity.Tiles.Wall;
 
 import java.awt.*;
 import java.util.Random;
@@ -15,8 +15,6 @@ public class GameMap {
     // Speed Item = 4
     // Flare Item = 5
     // Bomb Item = 6
-
-    // Breaking Brick = 20
     public int[][] map;
     public int[][] itemLayer;
 
@@ -63,6 +61,10 @@ public class GameMap {
             }
         }
 
+        map[1][1] = 0;
+        map[1][2] = 0;
+        map[2][1] = 0;
+
         // Boolean values for limiting number of each item at 1
         boolean hasSpeedItem = false;
         boolean hasFlareItem = false;
@@ -103,10 +105,6 @@ public class GameMap {
                 hasBombItem = true;
             }
         }
-
-        map[1][1] = 0;
-        map[1][2] = 0;
-        map[2][1] = 0;
     }
 
     public void drawMap(Graphics2D g) {
@@ -140,6 +138,7 @@ public class GameMap {
                 if (map[i][j] != 0 && map[i][j] != 1) {
                     map[i][j] = 0;
                 }
+                itemLayer[i][j] = 0;
             }
         }
 
@@ -153,14 +152,18 @@ public class GameMap {
             }
         }
 
+        map[1][1] = 0;
+        map[1][2] = 0;
+        map[2][1] = 0;
+
         boolean hasSpeedItem = false;
         while (!hasSpeedItem) {
             Random rand = new Random();
             int randomI = rand.nextInt(13);
             int randomJ = rand.nextInt(15);
 
-            if (map[randomI][randomJ] == 0) {
-                map[randomI][randomJ] = 4;
+            if (map[randomI][randomJ] == 2) {
+                itemLayer[randomI][randomJ] = 4;
                 hasSpeedItem = true;
             }
         }
@@ -171,8 +174,8 @@ public class GameMap {
             int randomI = rand.nextInt(13);
             int randomJ = rand.nextInt(15);
 
-            if (map[randomI][randomJ] == 0) {
-                map[randomI][randomJ] = 5;
+            if (map[randomI][randomJ] == 2) {
+                itemLayer[randomI][randomJ] = 5;
                 hasFlareItem = true;
             }
         }
@@ -183,14 +186,10 @@ public class GameMap {
             int randomI = rand.nextInt(13);
             int randomJ = rand.nextInt(15);
 
-            if (map[randomI][randomJ] == 0) {
-                map[randomI][randomJ] = 6;
+            if (map[randomI][randomJ] == 2) {
+                itemLayer[randomI][randomJ] = 6;
                 hasBombItem = true;
             }
         }
-
-        map[1][1] = 0;
-        map[1][2] = 0;
-        map[2][1] = 0;
     }
 }
