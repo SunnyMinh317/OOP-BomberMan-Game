@@ -7,7 +7,6 @@ import java.awt.image.BufferedImage;
 
 public class Tile extends Entity {
     protected BufferedImage tileTexture;
-    protected boolean isSolid;
 
     protected Tile() {
     }

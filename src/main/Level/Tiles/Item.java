@@ -14,17 +14,17 @@ public class Item extends Tile {
         if (itemType == 4) {
             tileTexture = Game.gameTileSheet.getSubimage(
                     // Just a dummy texture, needs fixing
-                    Game.TILESHEET_BLOCK_SIZE * 4, Game.TILESHEET_BLOCK_SIZE * 2, Game.TILESHEET_BLOCK_SIZE, Game.TILESHEET_BLOCK_SIZE
+                    Game.TILESHEET_BLOCK_SIZE * 8, Game.TILESHEET_BLOCK_SIZE * 0, Game.TILESHEET_BLOCK_SIZE, Game.TILESHEET_BLOCK_SIZE
             );
         } else if (itemType == 5) {
             tileTexture = Game.gameTileSheet.getSubimage(
                     // Just a dummy texture, needs fixing
-                    Game.TILESHEET_BLOCK_SIZE * 3, Game.TILESHEET_BLOCK_SIZE * 2, Game.TILESHEET_BLOCK_SIZE, Game.TILESHEET_BLOCK_SIZE
+                    Game.TILESHEET_BLOCK_SIZE * 7, Game.TILESHEET_BLOCK_SIZE * 0, Game.TILESHEET_BLOCK_SIZE, Game.TILESHEET_BLOCK_SIZE
             );
         } else if (itemType == 6) {
             tileTexture = Game.gameTileSheet.getSubimage(
                     // Just a dummy texture, needs fixing
-                    Game.TILESHEET_BLOCK_SIZE * 2, Game.TILESHEET_BLOCK_SIZE * 2, Game.TILESHEET_BLOCK_SIZE, Game.TILESHEET_BLOCK_SIZE
+                    Game.TILESHEET_BLOCK_SIZE * 6, Game.TILESHEET_BLOCK_SIZE * 0, Game.TILESHEET_BLOCK_SIZE, Game.TILESHEET_BLOCK_SIZE
             );
         }
     }

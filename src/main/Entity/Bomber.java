@@ -32,7 +32,7 @@ public class Bomber extends Entity {
         this.y = 48;
         this.speed = 4;
         this.kh = kh;
-        this.maxBombs = 2;
+        this.maxBombs = 30;
     }
 
     public static void loadBomberSprite() {
@@ -48,7 +48,7 @@ public class Bomber extends Entity {
         }
     }
 
-    public boolean canMove(int nextX, int nextY, int[][] scene) {
+    public boolean canMove(int nextX, int nextY, int[][] map) {
         int size = 3 * 16;
 
         int nextX_1 = nextX / size;
@@ -63,10 +63,10 @@ public class Bomber extends Entity {
         int nextX_4 = (nextX + size - 1) / size;
         int nextY_4 = (nextY + size - 1) / size;
 
-        return !((scene[nextY_1][nextX_1] == 1 || scene[nextY_1][nextX_1] == 2) ||
-                (scene[nextY_2][nextX_2] == 1 || scene[nextY_2][nextX_2] == 2) ||
-                (scene[nextY_3][nextX_3] == 1 || scene[nextY_3][nextX_3] == 2) ||
-                (scene[nextY_4][nextX_4] == 1 || scene[nextY_4][nextX_4] == 2));
+        return !((map[nextY_1][nextX_1] == 1 || map[nextY_1][nextX_1] == 2) ||
+                (map[nextY_2][nextX_2] == 1 || map[nextY_2][nextX_2] == 2) ||
+                (map[nextY_3][nextX_3] == 1 || map[nextY_3][nextX_3] == 2) ||
+                (map[nextY_4][nextX_4] == 1 || map[nextY_4][nextX_4] == 2));
     }
 
     // Check collision between 2 rectangle objects
@@ -84,7 +84,7 @@ public class Bomber extends Entity {
         return (x1 < x4) && (x3 < x2) && (y1 < y4) && (y3 < y2);
     }
 
-    public void updateBomber(int[][] map, ArrayList<Bomb> activeBombs) {
+    public void updateBomber(int[][] map, int[][] itemLayer, ArrayList<Bomb> activeBombs) {
         isMoving = false;
 
         if (kh.left && canMove(this.x - speed, this.y, map)) {
@@ -134,9 +134,9 @@ public class Bomber extends Entity {
         Rectangle speedItemRect = null;
         Rectangle flareItemRect = null;
         Rectangle bombItemRect = null;
-        for (int i = 0; i < map.length; i++) {
-            for (int j = 0; j < map[i].length; j++) {
-                if (map[i][j] == 4) {
+        for (int i = 0; i < itemLayer.length; i++) {
+            for (int j = 0; j < itemLayer[i].length; j++) {
+                if (itemLayer[i][j] == 4) {
                     speedI = i;
                     speedJ = j;
 
@@ -144,7 +144,7 @@ public class Bomber extends Entity {
                     speedItemRect = new Rectangle(speedJ * SPRITE_SIZE, speedI * SPRITE_SIZE, SPRITE_SIZE, SPRITE_SIZE);
                 }
 
-                if (map[i][j] == 5) {
+                if (itemLayer[i][j] == 5) {
                     flareI = i;
                     flareJ = j;
 
@@ -152,7 +152,7 @@ public class Bomber extends Entity {
                     flareItemRect = new Rectangle(flareJ * SPRITE_SIZE, flareI * SPRITE_SIZE, SPRITE_SIZE, SPRITE_SIZE);
                 }
 
-                if (map[i][j] == 6) {
+                if (itemLayer[i][j] == 6) {
                     bombI = i;
                     bombJ = j;
 
@@ -167,7 +167,7 @@ public class Bomber extends Entity {
 
         // Detect collision with speed item
         if (isOverlapping(bomberRect, speedItemRect)) {
-            map[speedI][speedJ] = 0;
+            itemLayer[speedI][speedJ] = 0;
             System.out.println("Collected speed item!");
 
             // Speed up
@@ -180,16 +180,16 @@ public class Bomber extends Entity {
 
         // Detect collision with flare item
         if (isOverlapping(bomberRect, flareItemRect)) {
-            map[flareI][flareJ] = 0;
+            itemLayer[flareI][flareJ] = 0;
             System.out.println("Collected flare item!");
-
+            Bomb.bombStrength++;
             // Effect of flare item
             // TO DO!
         }
 
         // Detect collision with bomb item
         if (isOverlapping(bomberRect, bombItemRect)) {
-            map[bombI][bombJ] = 0;
+            itemLayer[bombI][bombJ] = 0;
             System.out.println("Collected bomb item!");
 
             // Increase maxBombs variable, bomber able to set more bomb at the same time

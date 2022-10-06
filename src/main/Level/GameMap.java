@@ -15,7 +15,10 @@ public class GameMap {
     // Speed Item = 4
     // Flare Item = 5
     // Bomb Item = 6
+
+    // Breaking Brick = 20
     public int[][] map;
+    public int[][] itemLayer;
 
     public GameMap() {
         map = new int[][]{
@@ -32,6 +35,22 @@ public class GameMap {
                 {1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1},
                 {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
                 {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1}
+        };
+
+        itemLayer = new int[][]{
+                {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
         };
 
         for (int i = 0; i < 13; i++) {
@@ -55,8 +74,8 @@ public class GameMap {
             int randomI = rand.nextInt(13);
             int randomJ = rand.nextInt(15);
 
-            if (map[randomI][randomJ] == 0) {
-                map[randomI][randomJ] = 4;
+            if (map[randomI][randomJ] == 2) {
+                itemLayer[randomI][randomJ] = 4;
                 hasSpeedItem = true;
             }
         }
@@ -67,8 +86,8 @@ public class GameMap {
             int randomI = rand.nextInt(13);
             int randomJ = rand.nextInt(15);
 
-            if (map[randomI][randomJ] == 0) {
-                map[randomI][randomJ] = 5;
+            if (map[randomI][randomJ] == 2) {
+                itemLayer[randomI][randomJ] = 5;
                 hasFlareItem = true;
             }
         }
@@ -79,8 +98,8 @@ public class GameMap {
             int randomI = rand.nextInt(13);
             int randomJ = rand.nextInt(15);
 
-            if (map[randomI][randomJ] == 0) {
-                map[randomI][randomJ] = 6;
+            if (map[randomI][randomJ] == 2) {
+                itemLayer[randomI][randomJ] = 6;
                 hasBombItem = true;
             }
         }
@@ -93,21 +112,23 @@ public class GameMap {
     public void drawMap(Graphics2D g) {
         for (int i = 0; i < 13; i++) {
             for (int j = 0; j < 15; j++) {
+                if (itemLayer[i][j] == 4) {
+                    Item drawnSpeedItem = new Item(j * 48, i * 48, 4);
+                    drawnSpeedItem.drawTile(g);
+                } else if (itemLayer[i][j] == 5) {
+                    Item drawnFlareItem = new Item(j * 48, i * 48, 5);
+                    drawnFlareItem.drawTile(g);
+                } else if (itemLayer[i][j] == 6) {
+                    Item drawnFlareItem = new Item(j * 48, i * 48, 6);
+                    drawnFlareItem.drawTile(g);
+                }
+
                 if (map[i][j] == 1) {
                     Wall drawnWall = new Wall(j * 48, i * 48);
                     drawnWall.drawTile(g);
                 } else if (map[i][j] == 2) {
                     Brick drawnBrick = new Brick(j * 48, i * 48);
                     drawnBrick.drawTile(g);
-                } else if (map[i][j] == 4) {
-                    Item drawnSpeedItem = new Item(j * 48, i * 48, 4);
-                    drawnSpeedItem.drawTile(g);
-                } else if (map[i][j] == 5) {
-                    Item drawnFlareItem = new Item(j * 48, i * 48, 5);
-                    drawnFlareItem.drawTile(g);
-                } else if (map[i][j] == 6) {
-                    Item drawnFlareItem = new Item(j * 48, i * 48, 6);
-                    drawnFlareItem.drawTile(g);
                 }
             }
         }
