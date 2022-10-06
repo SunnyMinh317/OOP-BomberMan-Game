@@ -133,6 +133,7 @@ public class GameMap {
     }
 
     public void regenerateMap() {
+
         for (int i = 0; i < 13; i++) {
             for (int j = 0; j < 15; j++) {
                 if (map[i][j] != 0 && map[i][j] != 1) {

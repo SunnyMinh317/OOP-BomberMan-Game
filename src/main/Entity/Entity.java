@@ -17,4 +17,12 @@ public class Entity {
         this.y = 0;
         this.speed = 0;
     }
+
+    public int getX() {
+        return x;
+    }
+
+    public int getY() {
+        return y;
+    }
 }

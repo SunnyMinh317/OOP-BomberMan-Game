@@ -3,6 +3,8 @@ package main.Entity;
 import main.Entity.Tiles.DestroyedBrick;
 import main.Entity.Tiles.Flame;
 import main.Game;
+import main.Input.Keyboard;
+import main.Level.GameMap;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -22,14 +24,17 @@ public class Bomb extends Entity {
     private static BufferedImage[] rightExplosionFrames = new BufferedImage[4];
     private static BufferedImage[] upExplosionFrames = new BufferedImage[4];
     private static BufferedImage[] downExplosionFrames = new BufferedImage[4];
-
-    private ArrayList<Flame> spreadFlame = new ArrayList<Flame>();
     private ArrayList<DestroyedBrick> brokenBrick = new ArrayList<DestroyedBrick>();
+    public ArrayList<Flame> spreadFlame = new ArrayList<Flame>();
 
     public Bomb(int x, int y) {
         this.x = x;
         this.y = y;
         placed = true;
+    }
+
+    public ArrayList<Flame> getSpreadFlame() {
+        return spreadFlame;
     }
 
     public static void loadBombImage() {
