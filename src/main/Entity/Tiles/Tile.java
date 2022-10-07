@@ -5,7 +5,7 @@ import main.Entity.Entity;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
-public class Tile extends Entity {
+public abstract class Tile extends Entity {
     protected BufferedImage tileTexture;
 
     protected Tile() {

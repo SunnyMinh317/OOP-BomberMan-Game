@@ -1,5 +1,7 @@
 package main.Entity;
 
+import java.awt.*;
+
 public class Entity {
     protected int x, y;
     protected int speed;
@@ -13,8 +15,8 @@ public class Entity {
     }
 
     public Entity(int x, int y) {
-        this.x = 0;
-        this.y = 0;
+        this.x = x;
+        this.y = y;
         this.speed = 0;
     }
 
@@ -24,5 +26,9 @@ public class Entity {
 
     public int getY() {
         return y;
+    }
+
+    public Rectangle getEntityRect() {
+        return new Rectangle(x, y, 48, 48);
     }
 }

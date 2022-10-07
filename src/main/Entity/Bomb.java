@@ -16,7 +16,7 @@ public class Bomb extends Entity {
     private int bombInterval = 10, currentBombTick = 0, currentBombFrameIndex = 0; // ANIMATING THE BOMB
     private int countToExplosion = 0, explosionInterval = 5; // BOMB TICKING DOWN
     private int currentExplosionTick = 0, explosionAnimInterval = 10, currentExplosionFrameIndex = 0;
-    private boolean placed, exploded;
+    private boolean placed, exploded = false;
 
     private static BufferedImage[] bombFrames = new BufferedImage[3];
     private static BufferedImage[] middleExplosionFrames = new BufferedImage[4];
@@ -302,7 +302,6 @@ public class Bomb extends Entity {
                 return selectedBomb;
             }
         }
-        System.out.println("Found no bombs");
         return null;
     }
 }

@@ -1,10 +1,15 @@
 package main.Level;
 
+import main.Entity.Bomb;
+import main.Entity.Enemies.Balloom;
+import main.Entity.Enemies.Enemy;
+import main.Entity.Enemies.Oneal;
 import main.Entity.Tiles.Brick;
 import main.Entity.Tiles.Item;
 import main.Entity.Tiles.Wall;
 
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.Random;
 
 public class GameMap {
@@ -15,8 +20,11 @@ public class GameMap {
     // Speed Item = 4
     // Flare Item = 5
     // Bomb Item = 6
+    public int mapX, mapY;
     public int[][] map;
     public int[][] itemLayer;
+    public ArrayList<Enemy> enemyList = new ArrayList<Enemy>();
+    public ArrayList<Bomb> activeBombs = new ArrayList<Bomb>();
 
     public GameMap() {
         map = new int[][]{
@@ -54,8 +62,21 @@ public class GameMap {
         for (int i = 0; i < 13; i++) {
             for (int j = 0; j < 15; j++) {
                 if (map[i][j] == 0) {
-                    if (new Random().nextInt(10) < 5) {
+                    if (new Random().nextInt(10) < 1) {
                         map[i][j] = 2;
+                    }
+                }
+            }
+        }
+
+        for (int i = 0; i < 13; i++) {
+            for (int j = 0; j < 15; j++) {
+                if (map[i][j] == 0) {
+                    int decidor = new Random().nextInt(15);
+                    if (decidor == 1) {
+                        enemyList.add(new Oneal(j * 48, i * 48, this));
+                    } else if (decidor == 0) {
+                        enemyList.add(new Balloom(j * 48, i * 48, this));
                     }
                 }
             }
@@ -64,6 +85,9 @@ public class GameMap {
         map[1][1] = 0;
         map[1][2] = 0;
         map[2][1] = 0;
+
+        map[10][1] = 0;
+        map[11][1] = 0;
 
         // Boolean values for limiting number of each item at 1
         boolean hasSpeedItem = false;
@@ -193,4 +217,23 @@ public class GameMap {
             }
         }
     }
+
+    public void removeEnemy(Enemy e) {
+        System.out.println("Func called!");
+        for (int i = 0; i < enemyList.size(); i++) {
+            if (e.getX() == enemyList.get(i).getX() && e.getY() == enemyList.get(i).getY()) {
+                enemyList.remove(i);
+                System.out.println("enemy removed!");
+                return;
+            }
+        }
+    }
+//    public int getSpecificEnemyIndex(Enemy e) {
+//        for (int i = 0; i < enemyList.size(); i++) {
+//            if (enemyList.get(i).getEntityRect().equals(e.getEntityRect())) {
+//                return i;
+//            }
+//        }
+//        return -1;
+//    }
 }

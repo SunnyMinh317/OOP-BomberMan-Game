@@ -28,6 +28,7 @@ public class Bomber extends Entity {
     private static BufferedImage[] bomberSpriteDie = new BufferedImage[8];
 
     private int currentPlayerTick = 0, playerFrameInterval = 5, currentPlayerFrameIndex = 0;
+    private int currentDeadPlayerTick = 0, deadPlayerFrameInterval = 10, currentDeadPlayerFrame = 0;
 
 
     public int maxBombs;
@@ -80,7 +81,8 @@ public class Bomber extends Entity {
 
     // Check collision between 2 rectangle objects
     private boolean isOverlapping(Rectangle a, Rectangle b) {
-        if (a == null || b == null) return false;
+        if (a == null || b == null)
+            return false;
         double x1 = a.getX();
         double y1 = a.getY() - a.getHeight();
         double x2 = a.getX() + a.getWidth();
@@ -95,34 +97,36 @@ public class Bomber extends Entity {
 
     public void updateBomber(int[][] map, int[][] itemLayer, ArrayList<Bomb> activeBombs) {
         isMoving = false;
-        if (kh.left && canMove(this.x - speed, this.y, map)) {
-            bomberState = 3;
-            isMoving = true;
-            x -= speed;
-        }
-        if (kh.right && canMove(this.x + speed, this.y, map)) {
-            bomberState = 1;
-            isMoving = true;
-            x += speed;
-        }
-        if (kh.up && canMove(this.x, this.y - speed, map)) {
-            bomberState = 2;
-            isMoving = true;
-            y -= speed;
-        }
-        if (kh.down && canMove(this.x, this.y + speed, map)) {
-            bomberState = 0;
-            isMoving = true;
-            y += speed;
-        }
-        if (kh.space && activeBombs.size() < maxBombs) {
-            int bombX = (this.x + 24) / 48;
-            int bombY = (this.y + 24) / 48;
+        if (!isDead) {
+            if (kh.left && canMove(this.x - speed, this.y, map)) {
+                bomberState = 3;
+                isMoving = true;
+                x -= speed;
+            }
+            if (kh.right && canMove(this.x + speed, this.y, map)) {
+                bomberState = 1;
+                isMoving = true;
+                x += speed;
+            }
+            if (kh.up && canMove(this.x, this.y - speed, map)) {
+                bomberState = 2;
+                isMoving = true;
+                y -= speed;
+            }
+            if (kh.down && canMove(this.x, this.y + speed, map)) {
+                bomberState = 0;
+                isMoving = true;
+                y += speed;
+            }
+            if (kh.space && activeBombs.size() < maxBombs) {
+                int bombX = (this.x + 24) / 48;
+                int bombY = (this.y + 24) / 48;
 
-            if (map[bombY][bombX] == 0) {
-                Bomb newBomb = new Bomb(bombX * 48, bombY * 48);
-                activeBombs.add(newBomb);
-                map[bombY][bombX] = 3;
+                if (map[bombY][bombX] == 0) {
+                    Bomb newBomb = new Bomb(bombX * 48, bombY * 48);
+                    activeBombs.add(newBomb);
+                    map[bombY][bombX] = 3;
+                }
             }
         }
 
@@ -212,23 +216,6 @@ public class Bomber extends Entity {
 
         // If the player is not yet dead, process movement, and check for fire hazard??
         if (!isDead) {
-            for (Bomb activeBomb : activeBombs) {
-                for (Flame spreadFlame : activeBomb.getSpreadFlame()) {
-                    flameX = spreadFlame.getX();
-                    flameY = spreadFlame.getY();
-                    flameRect = new Rectangle(flameX, flameY, SPRITE_SIZE, SPRITE_SIZE);
-                    if (isOverlapping(bomberRect, flameRect)) {
-                        System.out.println("You're dead meat");
-                        touched = true;
-                        break;
-                    }
-                }
-                if(touched) {
-                    System.out.println("Loop?");
-                    break;
-                }
-            }
-
             if (isMoving) {
                 currentPlayerTick++;
                 if (currentPlayerTick == playerFrameInterval) {
@@ -244,30 +231,58 @@ public class Bomber extends Entity {
             if (!isMoving) {
                 currentPlayerFrameIndex = 1;
             }
-        } else { // If he's dead, process death animation
-            currentPlayerTick++;
-            if (currentPlayerTick == playerFrameInterval) {
-                if (!gameOver) {
-                    currentPlayerTick = 0;
-                    currentPlayerFrameIndex++;
-                }
 
-                if (currentPlayerFrameIndex == 7) {
-                    gameOver = true;
+            for (Bomb activeBomb : activeBombs) {
+                if (activeBomb.isExploded() && isOverlapping(bomberRect, activeBomb.getEntityRect())) {
+                    isDead = true;
+                    isMoving = false;
+                    bomberState = 4;
+                    break;
                 }
-                System.out.println(currentPlayerFrameIndex);
+                for (Flame spreadFlame : activeBomb.getSpreadFlame()) {
+                    if (isOverlapping(bomberRect, spreadFlame.getEntityRect())) {
+                        isDead = true;
+                        isMoving = false;
+                        bomberState = 4;
+                        break;
+                    }
+                }
+                if (isDead) {
+                    break;
+                }
+            }
+        } else { // If he's dead, process death animation
+            if (!gameOver) {
+                currentDeadPlayerTick++;
+                if (currentDeadPlayerTick == deadPlayerFrameInterval) {
+                    currentDeadPlayerTick = 0;
+                    currentDeadPlayerFrame++;
+                    if (currentDeadPlayerFrame == 7) {
+                        gameOver = true;
+                    }
+                }
             }
         }
-
     }
 
     public void drawBomber(Graphics2D g) {
-        switch (bomberState) {
-            case 1 -> g.drawImage(bomberSpriteRight[currentPlayerFrameIndex], x, y, TILE_SIZE * 3, TILE_SIZE * 3, null);
-            case 2 -> g.drawImage(bomberSpriteUp[currentPlayerFrameIndex], x, y, TILE_SIZE * 3, TILE_SIZE * 3, null);
-            case 3 -> g.drawImage(bomberSpriteLeft[currentPlayerFrameIndex], x, y, TILE_SIZE * 3, TILE_SIZE * 3, null);
-            case 4 -> g.drawImage(bomberSpriteDie[currentPlayerFrameIndex], x, y, TILE_SIZE * 3, TILE_SIZE * 3, null);
-            default -> g.drawImage(bomberSpriteDown[currentPlayerFrameIndex], x, y, TILE_SIZE * 3, TILE_SIZE * 3, null);
+        if (isDead) {
+            g.drawImage(bomberSpriteDie[currentDeadPlayerFrame], x, y, TILE_SIZE * 3, TILE_SIZE * 3, null);
+        } else {
+            switch (bomberState) {
+                case 1 -> g.drawImage(bomberSpriteRight[currentPlayerFrameIndex], x, y, TILE_SIZE * 3, TILE_SIZE * 3, null);
+                case 2 -> g.drawImage(bomberSpriteUp[currentPlayerFrameIndex], x, y, TILE_SIZE * 3, TILE_SIZE * 3, null);
+                case 3 -> g.drawImage(bomberSpriteLeft[currentPlayerFrameIndex], x, y, TILE_SIZE * 3, TILE_SIZE * 3, null);
+                default -> g.drawImage(bomberSpriteDown[currentPlayerFrameIndex], x, y, TILE_SIZE * 3, TILE_SIZE * 3, null);
+            }
         }
+    }
+
+    public static boolean isDead() {
+        return isDead;
+    }
+
+    public boolean isGameOver() {
+        return gameOver;
     }
 }
