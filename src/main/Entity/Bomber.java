@@ -3,6 +3,7 @@ package main.Entity;
 import javax.imageio.ImageIO;
 import javax.sound.sampled.AudioInputStream;
 
+import main.Entity.Enemies.Enemy;
 import main.Entity.Tiles.Flame;
 import main.GUI.GamePanel;
 import main.Input.Keyboard;
@@ -58,6 +59,7 @@ public class Bomber extends Entity {
         }
     }
 
+    // Check collision for the map only
     public boolean canMove(int nextX, int nextY, int[][] map) {
         int size = 3 * 16;
 
@@ -95,7 +97,8 @@ public class Bomber extends Entity {
         return (x1 < x4) && (x3 < x2) && (y1 < y4) && (y3 < y2);
     }
 
-    public void updateBomber(int[][] map, int[][] itemLayer, ArrayList<Bomb> activeBombs) {
+    public void updateBomber(GameMap gameMap, int[][] itemLayer) {
+        int[][] map = gameMap.map;
         isMoving = false;
         if (!isDead) {
             if (kh.left && canMove(this.x - speed, this.y, map)) {
@@ -118,13 +121,13 @@ public class Bomber extends Entity {
                 isMoving = true;
                 y += speed;
             }
-            if (kh.space && activeBombs.size() < maxBombs) {
+            if (kh.space && gameMap.activeBombs.size() < maxBombs) {
                 int bombX = (this.x + 24) / 48;
                 int bombY = (this.y + 24) / 48;
 
                 if (map[bombY][bombX] == 0) {
                     Bomb newBomb = new Bomb(bombX * 48, bombY * 48);
-                    activeBombs.add(newBomb);
+                    gameMap.activeBombs.add(newBomb);
                     map[bombY][bombX] = 3;
                 }
             }
@@ -232,7 +235,7 @@ public class Bomber extends Entity {
                 currentPlayerFrameIndex = 1;
             }
 
-            for (Bomb activeBomb : activeBombs) {
+            for (Bomb activeBomb : gameMap.activeBombs) {
                 if (activeBomb.isExploded() && isOverlapping(bomberRect, activeBomb.getEntityRect())) {
                     isDead = true;
                     isMoving = false;
@@ -247,7 +250,13 @@ public class Bomber extends Entity {
                         break;
                     }
                 }
-                if (isDead) {
+            }
+
+            for (Enemy selectedEnemy : gameMap.enemyList) {
+                if (isOverlapping(bomberRect, selectedEnemy.getEntityRect()) && !selectedEnemy.isFading() && !selectedEnemy.isShocked()) {
+                    isDead = true;
+                    isMoving = false;
+                    bomberState = 4;
                     break;
                 }
             }

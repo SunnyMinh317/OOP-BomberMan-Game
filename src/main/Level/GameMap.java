@@ -71,8 +71,8 @@ public class GameMap {
 
         for (int i = 0; i < 13; i++) {
             for (int j = 0; j < 15; j++) {
-                if (map[i][j] == 0) {
-                    int decidor = new Random().nextInt(15);
+                if (map[i][j] == 0 && i > 3 && j > 3) {
+                    int decidor = new Random().nextInt(35);
                     if (decidor == 1) {
                         enemyList.add(new Oneal(j * 48, i * 48, this));
                     } else if (decidor == 0) {

@@ -21,7 +21,7 @@ public class Game {
     Keyboard kh;
     public static BufferedImage gameTileSheet;
 
-    Bomber player;
+    public static Bomber player;
     GameMap gameMap;
 
     public Game(GamePanel gp, Keyboard kh) {
@@ -29,8 +29,8 @@ public class Game {
         this.kh = kh;
         loadGameAssets();
         Bomber.loadBomberSprite();
-        gameMap = new GameMap();
         player = new Bomber(gp, kh);
+        gameMap = new GameMap();
         Bomb.loadBombImage();
     }
 
@@ -46,7 +46,7 @@ public class Game {
     public void updateGame() {
         if (!player.isGameOver()) {
             // Update the player
-            player.updateBomber(gameMap.map, gameMap.itemLayer, gameMap.activeBombs);
+            player.updateBomber(gameMap, gameMap.itemLayer);
 
             // Update the bombs
             for (int i = 0; i < gameMap.activeBombs.size(); i++) {
