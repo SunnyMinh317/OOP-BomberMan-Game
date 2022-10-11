@@ -10,10 +10,10 @@ import main.Game;
 import main.Input.Keyboard;
 
 public class GamePanel extends JPanel implements Runnable {
-    final int WINDOW_WIDTH = 720;
-    final int WINDOW_HEIGHT = 624;
-    public Thread gameThread;
-    public boolean isRunning;
+    public static final int WINDOW_WIDTH = 720;
+    public static final int WINDOW_HEIGHT = 624;
+    public static Thread gameThread;
+    public static boolean isRunning;
     public Keyboard input = new Keyboard();
     public Game mainGame = new Game(this, input);
 

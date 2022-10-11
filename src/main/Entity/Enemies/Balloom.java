@@ -1,6 +1,5 @@
 package main.Entity.Enemies;
 
-import main.Entity.Bomber;
 import main.Entity.Enemies.AI.AILow;
 import main.Game;
 import main.Level.GameMap;

@@ -6,12 +6,13 @@ import main.Entity.Enemies.Balloom;
 import main.Entity.Enemies.Enemy;
 import main.GUI.GamePanel;
 import main.Input.Keyboard;
+import main.Level.Camera;
 import main.Level.GameMap;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.util.ArrayList;
+import java.io.File;
 import java.util.Objects;
 
 public class Game {
@@ -21,6 +22,7 @@ public class Game {
     Keyboard kh;
     public static BufferedImage gameTileSheet;
 
+    public static Camera gameCam;
     public static Bomber player;
     GameMap gameMap;
 
@@ -31,13 +33,14 @@ public class Game {
         Bomber.loadBomberSprite();
         player = new Bomber(gp, kh);
         gameMap = new GameMap();
+        gameCam = new Camera(gameMap.getLevelWidth(), gameMap.getLevelHeight());
         Bomb.loadBombImage();
     }
 
     // Load the tilesheet
     private void loadGameAssets() {
         try {
-            gameTileSheet = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/sheets.png")));
+            gameTileSheet = ImageIO.read(new File("res/sheets.png"));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -47,6 +50,7 @@ public class Game {
         if (!player.isGameOver()) {
             // Update the player
             player.updateBomber(gameMap, gameMap.itemLayer);
+            gameCam.updateCamera(player.getX(), player.getY());
 
             // Update the bombs
             for (int i = 0; i < gameMap.activeBombs.size(); i++) {
@@ -56,11 +60,6 @@ public class Game {
             // Update the enemies
             for (int i = 0; i < gameMap.enemyList.size(); i++) {
                 gameMap.enemyList.get(i).updateEnemy();
-            }
-
-            // Testing only
-            if (kh.pPress) {
-                gameMap.regenerateMap();
             }
         }
     }

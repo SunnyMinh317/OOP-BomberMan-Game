@@ -11,7 +11,7 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
 public class Bomb extends Entity {
-    public static int bombStrength = 5;
+    public static int bombStrength = 1;
 
     private int bombInterval = 10, currentBombTick = 0, currentBombFrameIndex = 0; // ANIMATING THE BOMB
     private int countToExplosion = 0, explosionInterval = 5; // BOMB TICKING DOWN
@@ -272,11 +272,11 @@ public class Bomb extends Entity {
 
     public void drawBomb(Graphics2D g) {
         if (placed) {
-            g.drawImage(bombFrames[currentBombFrameIndex], this.x, this.y, 48, 48, null);
+            g.drawImage(bombFrames[currentBombFrameIndex], this.x - Game.gameCam.getCamX(), this.y - Game.gameCam.getCamY(), 48, 48, null);
         }
 
         if (exploded) {
-            g.drawImage(middleExplosionFrames[currentExplosionFrameIndex], this.x, this.y, 48, 48, null);
+            g.drawImage(middleExplosionFrames[currentExplosionFrameIndex], this.x - Game.gameCam.getCamX(), this.y - Game.gameCam.getCamY(), 48, 48, null);
             for (Flame flame : spreadFlame) {
                 flame.drawFlame(g);
             }

@@ -73,6 +73,6 @@ public class Flame extends Tile {
     }
 
     public void drawFlame(Graphics2D g) {
-        g.drawImage(flameTexture[currentExplosionFrameIndex], this.x, this.y, 48, 48, null);
+        g.drawImage(flameTexture[currentExplosionFrameIndex], this.x - Game.gameCam.getCamX(), this.y - Game.gameCam.getCamY(), 48, 48, null);
     }
 }

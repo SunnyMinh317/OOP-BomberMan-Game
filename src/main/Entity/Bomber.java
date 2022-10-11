@@ -12,14 +12,11 @@ import main.Level.GameMap;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.util.ArrayList;
-import java.util.Objects;
 
 public class Bomber extends Entity {
     public Keyboard kh;
 
     private int bomberState = 0; // 0 = SOUTH, 1 = EAST, 2 = NORTH, 3 = WEST, 4 = DEAD, 5 = DEFAULT
-    private boolean isMoving = false;
     static boolean isDead = false;
     private boolean gameOver = false;
     private static BufferedImage[] bomberSpriteLeft = new BufferedImage[3];
@@ -39,7 +36,7 @@ public class Bomber extends Entity {
         this.y = 48;
         this.speed = 4;
         this.kh = kh;
-        this.maxBombs = 10;
+        this.maxBombs = 1;
     }
 
     public static void loadBomberSprite() {
@@ -99,7 +96,7 @@ public class Bomber extends Entity {
 
     public void updateBomber(GameMap gameMap, int[][] itemLayer) {
         int[][] map = gameMap.map;
-        isMoving = false;
+        boolean isMoving = false;
         if (!isDead) {
             if (kh.left && canMove(this.x - speed, this.y, map)) {
                 bomberState = 3;
@@ -276,13 +273,13 @@ public class Bomber extends Entity {
 
     public void drawBomber(Graphics2D g) {
         if (isDead) {
-            g.drawImage(bomberSpriteDie[currentDeadPlayerFrame], x, y, TILE_SIZE * 3, TILE_SIZE * 3, null);
+            g.drawImage(bomberSpriteDie[currentDeadPlayerFrame], x - Game.gameCam.getCamX(), y - Game.gameCam.getCamY(), TILE_SIZE * 3, TILE_SIZE * 3, null);
         } else {
             switch (bomberState) {
-                case 1 -> g.drawImage(bomberSpriteRight[currentPlayerFrameIndex], x, y, TILE_SIZE * 3, TILE_SIZE * 3, null);
-                case 2 -> g.drawImage(bomberSpriteUp[currentPlayerFrameIndex], x, y, TILE_SIZE * 3, TILE_SIZE * 3, null);
-                case 3 -> g.drawImage(bomberSpriteLeft[currentPlayerFrameIndex], x, y, TILE_SIZE * 3, TILE_SIZE * 3, null);
-                default -> g.drawImage(bomberSpriteDown[currentPlayerFrameIndex], x, y, TILE_SIZE * 3, TILE_SIZE * 3, null);
+                case 1 -> g.drawImage(bomberSpriteRight[currentPlayerFrameIndex], x - Game.gameCam.getCamX(), y - Game.gameCam.getCamY(), TILE_SIZE * 3, TILE_SIZE * 3, null);
+                case 2 -> g.drawImage(bomberSpriteUp[currentPlayerFrameIndex], x - Game.gameCam.getCamX(), y - Game.gameCam.getCamY(), TILE_SIZE * 3, TILE_SIZE * 3, null);
+                case 3 -> g.drawImage(bomberSpriteLeft[currentPlayerFrameIndex], x - Game.gameCam.getCamX(), y - Game.gameCam.getCamY(), TILE_SIZE * 3, TILE_SIZE * 3, null);
+                default -> g.drawImage(bomberSpriteDown[currentPlayerFrameIndex], x - Game.gameCam.getCamX(), y - Game.gameCam.getCamY(), TILE_SIZE * 3, TILE_SIZE * 3, null);
             }
         }
     }

@@ -27,6 +27,6 @@ public class DestroyedBrick extends Tile {
     }
 
     public void drawDestroyedBrick(Graphics2D g) {
-        g.drawImage(brickShatterTexture[currentBrickBreakingFrame], this.x, this.y, 48, 48, null);
+        g.drawImage(brickShatterTexture[currentBrickBreakingFrame], this.x - Game.gameCam.getCamX(), this.y - Game.gameCam.getCamY(), 48, 48, null);
     }
 }

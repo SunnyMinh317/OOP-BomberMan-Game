@@ -162,12 +162,12 @@ public abstract class Enemy extends Entity {
 
     public void drawEnemy(Graphics2D g) {
         if (isShocked || isFading) {
-            g.drawImage(enemyDeathSprite[enemyFadeFrameIndex], this.x, this.y, 48, 48, null);
+            g.drawImage(enemyDeathSprite[enemyFadeFrameIndex], this.x - Game.gameCam.getCamX(), this.y - Game.gameCam.getCamY(), 48, 48, null);
         } else {
             if (lookingLeft) {
-                g.drawImage(enemySpriteLeft[enemyFrameIndex], this.x, this.y, 48, 48, null);
+                g.drawImage(enemySpriteLeft[enemyFrameIndex], this.x - Game.gameCam.getCamX(), this.y - Game.gameCam.getCamY(), 48, 48, null);
             } else {
-                g.drawImage(enemySpriteRight[enemyFrameIndex], this.x, this.y, 48, 48, null);
+                g.drawImage(enemySpriteRight[enemyFrameIndex], this.x - Game.gameCam.getCamX(), this.y - Game.gameCam.getCamY(), 48, 48, null);
             }
         }
     }
@@ -187,10 +187,10 @@ public abstract class Enemy extends Entity {
         int nextX_4 = (nextX + size - 1) / size;
         int nextY_4 = (nextY + size - 1) / size;
 
-        return !((map[nextY_1][nextX_1] == 1 || map[nextY_1][nextX_1] == 2) ||
-                (map[nextY_2][nextX_2] == 1 || map[nextY_2][nextX_2] == 2) ||
-                (map[nextY_3][nextX_3] == 1 || map[nextY_3][nextX_3] == 2) ||
-                (map[nextY_4][nextX_4] == 1 || map[nextY_4][nextX_4] == 2));
+        return !((map[nextY_1][nextX_1] == 1 || map[nextY_1][nextX_1] == 2 || map[nextY_1][nextX_1] == 3) ||
+                (map[nextY_2][nextX_2] == 1 || map[nextY_2][nextX_2] == 2 || map[nextY_2][nextX_2] == 3) ||
+                (map[nextY_3][nextX_3] == 1 || map[nextY_3][nextX_3] == 2 || map[nextY_3][nextX_3] == 3) ||
+                (map[nextY_4][nextX_4] == 1 || map[nextY_4][nextX_4] == 2 || map[nextY_4][nextX_4] == 3));
     }
 
     public boolean isShocked() {

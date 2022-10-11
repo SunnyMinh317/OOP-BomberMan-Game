@@ -1,6 +1,7 @@
 package main.Entity.Tiles;
 
 import main.Entity.Entity;
+import main.Game;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -17,6 +18,7 @@ public abstract class Tile extends Entity {
     }
 
     public void drawTile(Graphics2D g) {
-        g.drawImage(tileTexture, this.x, this.y, 48, 48, null);
+
+        g.drawImage(tileTexture, this.x - Game.gameCam.getCamX(), this.y - Game.gameCam.getCamY(), 48, 48, null);
     }
 }
