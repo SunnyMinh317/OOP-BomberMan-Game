@@ -5,6 +5,7 @@ import main.Entity.Bomber;
 import main.Entity.Enemies.Balloom;
 import main.Entity.Enemies.Enemy;
 import main.GUI.GamePanel;
+import main.GUI.UI;
 import main.Input.Keyboard;
 import main.Level.GameMap;
 
@@ -23,6 +24,7 @@ public class Game {
 
     public static Bomber player;
     GameMap gameMap;
+    Graphics2D g2;
 
     public Game(GamePanel gp, Keyboard kh) {
         this.gp = gp;
@@ -43,8 +45,13 @@ public class Game {
         }
     }
 
+    private void restartGame() {
+        player.reviveBomber();
+        gp.gameState = gp.PLAY_STATE;
+    }
+
     public void updateGame() {
-        if (!player.isGameOver()) {
+        if (gp.gameState == gp.PLAY_STATE) {
             // Update the player
             player.updateBomber(gameMap, gameMap.itemLayer);
 
@@ -57,11 +64,19 @@ public class Game {
             for (int i = 0; i < gameMap.enemyList.size(); i++) {
                 gameMap.enemyList.get(i).updateEnemy();
             }
+        }
 
-            // Testing only
-            if (kh.pPress) {
-                gameMap.regenerateMap();
+        // Press P to pause game
+        if (kh.pPress) {
+            if (gp.gameState == gp.PLAY_STATE) {
+                gp.gameState = gp.PAUSE_STATE;
+            } else if (gp.gameState == gp.PAUSE_STATE) {
+                gp.gameState = gp.PLAY_STATE;
             }
+        }
+
+        if(kh.rPress && gp.gameState == gp.GAME_OVER_STATE) {
+            restartGame();
         }
     }
 

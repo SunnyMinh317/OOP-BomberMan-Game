@@ -2,6 +2,7 @@ package main.Entity;
 
 import main.Entity.Tiles.DestroyedBrick;
 import main.Entity.Tiles.Flame;
+import main.GUI.GamePanel;
 import main.Game;
 import main.Input.Keyboard;
 import main.Level.GameMap;
@@ -11,7 +12,7 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
 public class Bomb extends Entity {
-    public static int bombStrength = 5;
+    public static int bombStrength = 2;
 
     private int bombInterval = 10, currentBombTick = 0, currentBombFrameIndex = 0; // ANIMATING THE BOMB
     private int countToExplosion = 0, explosionInterval = 5; // BOMB TICKING DOWN
@@ -240,6 +241,7 @@ public class Bomb extends Entity {
                     currentBombFrameIndex = 0;
                     countToExplosion++;
                     if (countToExplosion == explosionInterval) {
+                        GamePanel.playSFX(3);
                         placed = false;
                         exploded = true;
                         assessExplodingTiles(map, activeBombs);
