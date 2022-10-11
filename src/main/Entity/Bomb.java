@@ -2,6 +2,7 @@ package main.Entity;
 
 import main.Entity.Tiles.DestroyedBrick;
 import main.Entity.Tiles.Flame;
+import main.GUI.GamePanel;
 import main.Game;
 import main.Input.Keyboard;
 import main.Level.GameMap;
@@ -240,6 +241,7 @@ public class Bomb extends Entity {
                     currentBombFrameIndex = 0;
                     countToExplosion++;
                     if (countToExplosion == explosionInterval) {
+                        GamePanel.playSFX(3);
                         placed = false;
                         exploded = true;
                         assessExplodingTiles(map, activeBombs);

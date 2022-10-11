@@ -17,8 +17,8 @@ public class Bomber extends Entity {
     public Keyboard kh;
 
     private int bomberState = 0; // 0 = SOUTH, 1 = EAST, 2 = NORTH, 3 = WEST, 4 = DEAD, 5 = DEFAULT
+    private boolean isMoving = false;
     static boolean isDead = false;
-    private boolean gameOver = false;
     private static BufferedImage[] bomberSpriteLeft = new BufferedImage[3];
     private static BufferedImage[] bomberSpriteRight = new BufferedImage[3];
     private static BufferedImage[] bomberSpriteUp = new BufferedImage[3];
@@ -27,7 +27,7 @@ public class Bomber extends Entity {
 
     private int currentPlayerTick = 0, playerFrameInterval = 5, currentPlayerFrameIndex = 0;
     private int currentDeadPlayerTick = 0, deadPlayerFrameInterval = 10, currentDeadPlayerFrame = 0;
-
+    GamePanel gp;
 
     public int maxBombs;
 
@@ -37,6 +37,18 @@ public class Bomber extends Entity {
         this.speed = 4;
         this.kh = kh;
         this.maxBombs = 1;
+        this.gp = gp;
+    }
+
+    public void reviveBomber() {
+        currentPlayerFrameIndex = 0;
+        currentDeadPlayerFrame = 0;
+        bomberState = 1;
+        isDead = false;
+        x = 48;
+        y = 48;
+        speed = 4;
+        maxBombs = 10;
     }
 
     public static void loadBomberSprite() {
@@ -96,7 +108,7 @@ public class Bomber extends Entity {
 
     public void updateBomber(GameMap gameMap, int[][] itemLayer) {
         int[][] map = gameMap.map;
-        boolean isMoving = false;
+        isMoving = false;
         if (!isDead) {
             if (kh.left && canMove(this.x - speed, this.y, map)) {
                 bomberState = 3;
@@ -118,11 +130,13 @@ public class Bomber extends Entity {
                 isMoving = true;
                 y += speed;
             }
+
             if (kh.space && gameMap.activeBombs.size() < maxBombs) {
                 int bombX = (this.x + 24) / 48;
                 int bombY = (this.y + 24) / 48;
 
                 if (map[bombY][bombX] == 0) {
+                    GamePanel.playSFX(1);
                     Bomb newBomb = new Bomb(bombX * 48, bombY * 48);
                     gameMap.activeBombs.add(newBomb);
                     map[bombY][bombX] = 3;
@@ -179,6 +193,7 @@ public class Bomber extends Entity {
 
         // Detect collision with speed item
         if (isOverlapping(bomberRect, speedItemRect)) {
+            gp.playSFX(2);
             itemLayer[speedI][speedJ] = 0;
             System.out.println("Collected speed item!");
 
@@ -192,6 +207,7 @@ public class Bomber extends Entity {
 
         // Detect collision with flare item
         if (isOverlapping(bomberRect, flareItemRect)) {
+            gp.playSFX(2);
             itemLayer[flareI][flareJ] = 0;
             System.out.println("Collected flare item!");
             Bomb.bombStrength++;
@@ -201,6 +217,7 @@ public class Bomber extends Entity {
 
         // Detect collision with bomb item
         if (isOverlapping(bomberRect, bombItemRect)) {
+            GamePanel.playSFX(2);
             itemLayer[bombI][bombJ] = 0;
             System.out.println("Collected bomb item!");
 
@@ -216,6 +233,23 @@ public class Bomber extends Entity {
 
         // If the player is not yet dead, process movement, and check for fire hazard??
         if (!isDead) {
+            for (Bomb activeBomb : gameMap.activeBombs) {
+                for (Flame spreadFlame : activeBomb.getSpreadFlame()) {
+                    flameX = spreadFlame.getX();
+                    flameY = spreadFlame.getY();
+                    flameRect = new Rectangle(flameX, flameY, SPRITE_SIZE, SPRITE_SIZE);
+                    if (isOverlapping(bomberRect, flameRect)) {
+                        touched = true;
+                        bomberState = 4;
+                        isDead = true;
+                        break;
+                    }
+                }
+                if (touched) {
+                    break;
+                }
+            }
+
             if (isMoving) {
                 currentPlayerTick++;
                 if (currentPlayerTick == playerFrameInterval) {
@@ -239,6 +273,7 @@ public class Bomber extends Entity {
                     bomberState = 4;
                     break;
                 }
+
                 for (Flame spreadFlame : activeBomb.getSpreadFlame()) {
                     if (isOverlapping(bomberRect, spreadFlame.getEntityRect())) {
                         isDead = true;
@@ -258,13 +293,14 @@ public class Bomber extends Entity {
                 }
             }
         } else { // If he's dead, process death animation
-            if (!gameOver) {
+            if (gp.gameState == gp.PLAY_STATE) {
                 currentDeadPlayerTick++;
                 if (currentDeadPlayerTick == deadPlayerFrameInterval) {
                     currentDeadPlayerTick = 0;
                     currentDeadPlayerFrame++;
                     if (currentDeadPlayerFrame == 7) {
-                        gameOver = true;
+                        GamePanel.playSFX(4);
+                        gp.gameState = gp.GAME_OVER_STATE;
                     }
                 }
             }
@@ -286,9 +322,5 @@ public class Bomber extends Entity {
 
     public static boolean isDead() {
         return isDead;
-    }
-
-    public boolean isGameOver() {
-        return gameOver;
     }
 }

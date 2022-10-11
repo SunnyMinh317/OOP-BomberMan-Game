@@ -4,7 +4,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
 public class Keyboard implements KeyListener {
-    public boolean up, down, left, right, space, pPress, h;
+    public boolean up, down, left, right, space, pPress, rPress;
 
     @Override
     public void keyTyped(KeyEvent e) {
@@ -30,8 +30,8 @@ public class Keyboard implements KeyListener {
         if (e.getKeyCode() == KeyEvent.VK_P) {
             pPress = true;
         }
-        if (e.getKeyCode() == KeyEvent.VK_H) {
-            h = true;
+        if (e.getKeyCode() == KeyEvent.VK_R) {
+            rPress = true;
         }
     }
 
@@ -55,8 +55,8 @@ public class Keyboard implements KeyListener {
         if (e.getKeyCode() == KeyEvent.VK_P) {
             pPress = false;
         }
-        if (e.getKeyCode() == KeyEvent.VK_H) {
-            h = false;
+        if (e.getKeyCode() == KeyEvent.VK_R) {
+            rPress = false;
         }
     }
 }
