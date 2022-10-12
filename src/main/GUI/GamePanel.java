@@ -24,6 +24,8 @@ public class GamePanel extends JPanel implements Runnable {
     public final int PLAY_STATE = 1;
     public final int PAUSE_STATE = 2;
     public final int GAME_OVER_STATE = 3;
+    public final int TRANSITION_SCREEN_STATE = 4;
+    public final int WIN_STATE = 5;
     public UI ui;
 
 
@@ -95,7 +97,7 @@ public class GamePanel extends JPanel implements Runnable {
     }
 
     public void restart() {
-        gameState = MENU_SCREEN_STATE;
+        gameState = TRANSITION_SCREEN_STATE;
     }
 
 

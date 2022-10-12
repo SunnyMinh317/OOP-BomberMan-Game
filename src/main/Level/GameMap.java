@@ -23,12 +23,17 @@ public class GameMap {
     public ArrayList<Enemy> enemyList = new ArrayList<Enemy>();
     public ArrayList<Bomb> activeBombs = new ArrayList<Bomb>();
     public boolean levelComplete = false;
+    public static int level;
+    public static final int MAX_LEVEL = 2;
+    public static int currentLevel;
 
     public GameMap() {
-        loadMap(1);
+        level = 1;
+        loadMap(level);
     }
 
     public void loadMap(int levelNo) {
+        currentLevel = levelNo;
         String levelPath = "res/levels/Level" + levelNo + ".txt";
 
         map = MapLoader.loadLevel(levelPath);
@@ -82,14 +87,14 @@ public class GameMap {
     public void reloadMap() {
         enemyList.clear();
         activeBombs.clear();
-        loadMap(1);
+        loadMap(currentLevel);
         levelComplete = false;
     }
 
     public void nextMap() {
         enemyList.clear();
         activeBombs.clear();
-        loadMap(2);
+        loadMap(level);
         levelComplete = false;
     }
 

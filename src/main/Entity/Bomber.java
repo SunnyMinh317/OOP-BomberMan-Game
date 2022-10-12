@@ -28,7 +28,6 @@ public class Bomber extends Entity {
     private int currentPlayerTick = 0, playerFrameInterval = 5, currentPlayerFrameIndex = 0;
     private int currentDeadPlayerTick = 0, deadPlayerFrameInterval = 10, currentDeadPlayerFrame = 0;
     GamePanel gp;
-
     public int maxBombs;
 
     public Bomber(GamePanel gp, Keyboard kh) {
@@ -50,7 +49,7 @@ public class Bomber extends Entity {
         x = 48;
         y = 48;
         speed = 4;
-        maxBombs = 10;
+        this.maxBombs = 1;
     }
 
     public static void loadBomberSprite() {
@@ -242,10 +241,21 @@ public class Bomber extends Entity {
             System.out.println("Max bomb = " + maxBombs);
         }
 
-        if (bomberRect.x == portalItemRect.x && bomberRect.y == portalItemRect.y && gameMap.levelComplete) {
-            System.out.println("Next level!");
-            this.reviveBomber();
-            gameMap.nextMap();
+        if (bomberRect.getX() == portalItemRect.getX() && bomberRect.getY() == portalItemRect.getY() && gameMap.levelComplete) {
+            GameMap.level++;
+            if (GameMap.level <= GameMap.MAX_LEVEL) {
+
+                GamePanel.playSFX(9);
+                gp.gameState = gp.TRANSITION_SCREEN_STATE;
+                System.out.println("Next level!");
+                this.reviveBomber();
+                gameMap.nextMap();
+            } else {
+                GamePanel.playSFX(8);
+                System.out.println("YOU WON");
+                gp.gameState = gp.WIN_STATE;
+            }
+
         }
 
         int flameX;
@@ -336,10 +346,14 @@ public class Bomber extends Entity {
             g.drawImage(bomberSpriteDie[currentDeadPlayerFrame], x - Game.gameCam.getCamX(), y - Game.gameCam.getCamY(), TILE_SIZE * 3, TILE_SIZE * 3, null);
         } else {
             switch (bomberState) {
-                case 1 -> g.drawImage(bomberSpriteRight[currentPlayerFrameIndex], x - Game.gameCam.getCamX(), y - Game.gameCam.getCamY(), TILE_SIZE * 3, TILE_SIZE * 3, null);
-                case 2 -> g.drawImage(bomberSpriteUp[currentPlayerFrameIndex], x - Game.gameCam.getCamX(), y - Game.gameCam.getCamY(), TILE_SIZE * 3, TILE_SIZE * 3, null);
-                case 3 -> g.drawImage(bomberSpriteLeft[currentPlayerFrameIndex], x - Game.gameCam.getCamX(), y - Game.gameCam.getCamY(), TILE_SIZE * 3, TILE_SIZE * 3, null);
-                default -> g.drawImage(bomberSpriteDown[currentPlayerFrameIndex], x - Game.gameCam.getCamX(), y - Game.gameCam.getCamY(), TILE_SIZE * 3, TILE_SIZE * 3, null);
+                case 1 ->
+                        g.drawImage(bomberSpriteRight[currentPlayerFrameIndex], x - Game.gameCam.getCamX(), y - Game.gameCam.getCamY(), TILE_SIZE * 3, TILE_SIZE * 3, null);
+                case 2 ->
+                        g.drawImage(bomberSpriteUp[currentPlayerFrameIndex], x - Game.gameCam.getCamX(), y - Game.gameCam.getCamY(), TILE_SIZE * 3, TILE_SIZE * 3, null);
+                case 3 ->
+                        g.drawImage(bomberSpriteLeft[currentPlayerFrameIndex], x - Game.gameCam.getCamX(), y - Game.gameCam.getCamY(), TILE_SIZE * 3, TILE_SIZE * 3, null);
+                default ->
+                        g.drawImage(bomberSpriteDown[currentPlayerFrameIndex], x - Game.gameCam.getCamX(), y - Game.gameCam.getCamY(), TILE_SIZE * 3, TILE_SIZE * 3, null);
             }
         }
     }
