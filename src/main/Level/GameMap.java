@@ -83,12 +83,14 @@ public class GameMap {
         enemyList.clear();
         activeBombs.clear();
         loadMap(1);
+        levelComplete = false;
     }
 
     public void nextMap() {
         enemyList.clear();
         activeBombs.clear();
         loadMap(2);
+        levelComplete = false;
     }
 
     public void drawMap(Graphics2D g) {

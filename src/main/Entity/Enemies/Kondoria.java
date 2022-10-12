@@ -9,7 +9,7 @@ public class Kondoria extends Enemy {
     public Kondoria(int x, int y, GameMap map) {
         super(x, y, map);
 
-        speed = Game.player.getSpeed() / 2;
+        speed = 1;
 
         enemyDeathSprite[0] = Game.gameTileSheet.getSubimage(16 * 13, 16 * 11, 16, 16);
 

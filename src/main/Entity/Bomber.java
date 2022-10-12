@@ -278,8 +278,8 @@ public class Bomber extends Entity {
                     currentPlayerTick = 0;
                     currentPlayerFrameIndex++;
                     if (currentPlayerFrameIndex == 3) {
-                        GamePanel.playSFX(5);
                         currentPlayerFrameIndex = 0;
+                        GamePanel.playSFX(5);
                     }
 
                 }

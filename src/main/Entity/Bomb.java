@@ -16,15 +16,11 @@ public class Bomb extends Entity {
 
     private int bombInterval = 10, currentBombTick = 0, currentBombFrameIndex = 0; // ANIMATING THE BOMB
     private int countToExplosion = 0, explosionInterval = 5; // BOMB TICKING DOWN
-    private int currentExplosionTick = 0, explosionAnimInterval = 10, currentExplosionFrameIndex = 0;
+    private int currentExplosionTick = 0, explosionAnimInterval = 5, currentExplosionFrameIndex = 0;
     private boolean placed, exploded = false;
 
     private static BufferedImage[] bombFrames = new BufferedImage[3];
-    private static BufferedImage[] middleExplosionFrames = new BufferedImage[4];
-    private static BufferedImage[] leftExplosionFrames = new BufferedImage[4];
-    private static BufferedImage[] rightExplosionFrames = new BufferedImage[4];
-    private static BufferedImage[] upExplosionFrames = new BufferedImage[4];
-    private static BufferedImage[] downExplosionFrames = new BufferedImage[4];
+    private static BufferedImage[] middleExplosionFrames = new BufferedImage[7];
     private ArrayList<DestroyedBrick> brokenBrick = new ArrayList<DestroyedBrick>();
     public ArrayList<Flame> spreadFlame = new ArrayList<Flame>();
 
@@ -47,26 +43,9 @@ public class Bomb extends Entity {
                 middleExplosionFrames[1] = Game.gameTileSheet.getSubimage(7 * 16, 6 * 16, 16, 16);
                 middleExplosionFrames[2] = Game.gameTileSheet.getSubimage(2 * 16, 11 * 16, 16, 16);
                 middleExplosionFrames[3] = Game.gameTileSheet.getSubimage(7 * 16, 11 * 16, 16, 16);
-
-                leftExplosionFrames[0] = Game.gameTileSheet.getSubimage(0, 6 * 16, 16, 16);
-                leftExplosionFrames[1] = Game.gameTileSheet.getSubimage(5 * 16, 6 * 16, 16, 16);
-                leftExplosionFrames[2] = Game.gameTileSheet.getSubimage(0, 11 * 16, 16, 16);
-                leftExplosionFrames[3] = Game.gameTileSheet.getSubimage(5 * 16, 11 * 16, 16, 16);
-
-                rightExplosionFrames[0] = Game.gameTileSheet.getSubimage(4 * 16, 6 * 16, 16, 16);
-                rightExplosionFrames[1] = Game.gameTileSheet.getSubimage(9 * 16, 6 * 16, 16, 16);
-                rightExplosionFrames[2] = Game.gameTileSheet.getSubimage(4 * 16, 11 * 16, 16, 16);
-                rightExplosionFrames[3] = Game.gameTileSheet.getSubimage(9 * 16, 11 * 16, 16, 16);
-
-                upExplosionFrames[0] = Game.gameTileSheet.getSubimage(2 * 16, 4 * 16, 16, 16);
-                upExplosionFrames[1] = Game.gameTileSheet.getSubimage(7 * 16, 4 * 16, 16, 16);
-                upExplosionFrames[2] = Game.gameTileSheet.getSubimage(2 * 16, 9 * 16, 16, 16);
-                upExplosionFrames[3] = Game.gameTileSheet.getSubimage(7 * 16, 9 * 16, 16, 16);
-
-                downExplosionFrames[0] = Game.gameTileSheet.getSubimage(2 * 16, 8 * 16, 16, 16);
-                downExplosionFrames[1] = Game.gameTileSheet.getSubimage(7 * 16, 8 * 16, 16, 16);
-                downExplosionFrames[2] = Game.gameTileSheet.getSubimage(2 * 16, 13 * 16, 16, 16);
-                downExplosionFrames[3] = Game.gameTileSheet.getSubimage(7 * 16, 13 * 16, 16, 16);
+                middleExplosionFrames[4] = Game.gameTileSheet.getSubimage(2 * 16, 11 * 16, 16, 16);
+                middleExplosionFrames[5] = Game.gameTileSheet.getSubimage(7 * 16, 6 * 16, 16, 16);
+                middleExplosionFrames[6] = Game.gameTileSheet.getSubimage(2 * 16, 6 * 16, 16, 16);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -261,7 +240,7 @@ public class Bomb extends Entity {
             if (currentExplosionTick == explosionAnimInterval) {
                 currentExplosionTick = 0;
                 currentExplosionFrameIndex++;
-                if (currentExplosionFrameIndex == 4) {
+                if (currentExplosionFrameIndex == 7) {
                     exploded = false;
                     activeBombs.remove(0);
                     spreadFlame.clear();

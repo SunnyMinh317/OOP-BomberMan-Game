@@ -7,7 +7,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 
 public class DestroyedBrick extends Tile {
-    private BufferedImage[] brickShatterTexture = new BufferedImage[6];
+    private BufferedImage[] brickShatterTexture = new BufferedImage[7];
     private int currentBrickBreakingTick = 0, brickBreakingAnimInterval = 8, currentBrickBreakingFrame = 0;
 
     public DestroyedBrick(int x, int y) {
@@ -15,6 +15,7 @@ public class DestroyedBrick extends Tile {
 
         for (int i = 0; i < 6; i++) {
             brickShatterTexture[i] = Game.gameTileSheet.getSubimage(Game.TILESHEET_BLOCK_SIZE * (5 + i), Game.TILESHEET_BLOCK_SIZE * 3, Game.TILESHEET_BLOCK_SIZE, Game.TILESHEET_BLOCK_SIZE);
+            brickShatterTexture[6] = Game.gameTileSheet.getSubimage(Game.TILESHEET_BLOCK_SIZE * 5, Game.TILESHEET_BLOCK_SIZE * 4, Game.TILESHEET_BLOCK_SIZE, Game.TILESHEET_BLOCK_SIZE);
         }
     }
 
@@ -23,6 +24,9 @@ public class DestroyedBrick extends Tile {
         if (currentBrickBreakingTick == brickBreakingAnimInterval) {
             currentBrickBreakingTick = 0;
             currentBrickBreakingFrame++;
+            if (currentBrickBreakingFrame == 7) {
+                currentBrickBreakingFrame = 6;
+            }
         }
     }
 
