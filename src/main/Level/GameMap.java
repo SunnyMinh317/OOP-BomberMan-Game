@@ -29,6 +29,7 @@ public class GameMap {
     private int levelWidth, levelHeight;
     public ArrayList<Enemy> enemyList = new ArrayList<Enemy>();
     public ArrayList<Bomb> activeBombs = new ArrayList<Bomb>();
+    public boolean levelComplete = false;
 
     public GameMap() {
         map = MapLoader.loadLevel("res/levels/Level1.txt");
@@ -62,47 +63,6 @@ public class GameMap {
         map[1][1] = 0;
         map[1][2] = 0;
         map[2][1] = 0;
-
-        // Boolean values for limiting number of each item at 1
-//        boolean hasSpeedItem = false;
-//        boolean hasFlareItem = false;
-//        boolean hasBombItem = false;
-//
-//        // Generate speed item at random place on map
-//        while (!hasSpeedItem) {
-//            Random rand = new Random();
-//            int randomI = rand.nextInt(13);
-//            int randomJ = rand.nextInt(15);
-//
-//            if (map[randomI][randomJ] == 2) {
-//                itemLayer[randomI][randomJ] = 4;
-//                hasSpeedItem = true;
-//            }
-//        }
-//
-//        // Generate flare item at random place on map
-//        while (!hasFlareItem) {
-//            Random rand = new Random();
-//            int randomI = rand.nextInt(13);
-//            int randomJ = rand.nextInt(15);
-//
-//            if (map[randomI][randomJ] == 2) {
-//                itemLayer[randomI][randomJ] = 5;
-//                hasFlareItem = true;
-//            }
-//        }
-//
-//        // Generate bomb item at random place on map
-//        while (!hasBombItem) {
-//            Random rand = new Random();
-//            int randomI = rand.nextInt(13);
-//            int randomJ = rand.nextInt(15);
-//
-//            if (map[randomI][randomJ] == 2) {
-//                itemLayer[randomI][randomJ] = 6;
-//                hasBombItem = true;
-//            }
-//        }
     }
 
     public void drawMap(Graphics2D g) {

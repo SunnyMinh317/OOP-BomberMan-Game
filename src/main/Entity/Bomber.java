@@ -131,6 +131,7 @@ public class Bomber extends Entity {
                 y += speed;
             }
 
+
             if (kh.space && gameMap.activeBombs.size() < maxBombs) {
                 int bombX = (this.x + 24) / 48;
                 int bombY = (this.y + 24) / 48;
@@ -193,7 +194,7 @@ public class Bomber extends Entity {
 
         // Detect collision with speed item
         if (isOverlapping(bomberRect, speedItemRect)) {
-            gp.playSFX(2);
+            GamePanel.playSFX(2);
             itemLayer[speedI][speedJ] = 0;
             System.out.println("Collected speed item!");
 
@@ -207,7 +208,7 @@ public class Bomber extends Entity {
 
         // Detect collision with flare item
         if (isOverlapping(bomberRect, flareItemRect)) {
-            gp.playSFX(2);
+            GamePanel.playSFX(2);
             itemLayer[flareI][flareJ] = 0;
             System.out.println("Collected flare item!");
             Bomb.bombStrength++;
@@ -256,6 +257,7 @@ public class Bomber extends Entity {
                     currentPlayerTick = 0;
                     currentPlayerFrameIndex++;
                     if (currentPlayerFrameIndex == 3) {
+                        GamePanel.playSFX(5);
                         currentPlayerFrameIndex = 0;
                     }
 
@@ -299,6 +301,7 @@ public class Bomber extends Entity {
                     currentDeadPlayerTick = 0;
                     currentDeadPlayerFrame++;
                     if (currentDeadPlayerFrame == 7) {
+                        GamePanel.stopMusic();
                         GamePanel.playSFX(4);
                         gp.gameState = gp.GAME_OVER_STATE;
                     }

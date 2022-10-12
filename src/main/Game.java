@@ -7,6 +7,7 @@ import main.Entity.Enemies.Enemy;
 import main.GUI.GamePanel;
 import main.GUI.UI;
 import main.Input.Keyboard;
+import main.Input.Mouse;
 import main.Level.Camera;
 import main.Level.GameMap;
 
@@ -22,7 +23,6 @@ public class Game {
     GamePanel gp;
     Keyboard kh;
     public static BufferedImage gameTileSheet;
-
     public static Camera gameCam;
     public static Bomber player;
     GameMap gameMap;
@@ -37,10 +37,13 @@ public class Game {
         gameMap = new GameMap();
         gameCam = new Camera(gameMap.getLevelWidth(), gameMap.getLevelHeight());
         Bomb.loadBombImage();
+
     }
 
     // Load the tilesheet
     private void loadGameAssets() {
+        GamePanel.playSFX(6);
+        System.out.println(gp.gameState);
         try {
             gameTileSheet = ImageIO.read(new File("res/sheets.png"));
         } catch (Exception e) {
@@ -48,13 +51,14 @@ public class Game {
         }
     }
 
-    private void restartGame() {
+    public void restartGame() {
         player.reviveBomber();
-        gp.gameState = gp.PLAY_STATE;
+        gp.restart();
     }
 
     public void updateGame() {
         if (gp.gameState == gp.PLAY_STATE) {
+
             // Update the player
             player.updateBomber(gameMap, gameMap.itemLayer);
             gameCam.updateCamera(player.getX(), player.getY());
@@ -68,6 +72,11 @@ public class Game {
             for (int i = 0; i < gameMap.enemyList.size(); i++) {
                 gameMap.enemyList.get(i).updateEnemy();
             }
+
+            if(gameMap.enemyList.isEmpty()) {
+                gameMap.levelComplete = true;
+                System.out.println("PORTAL OPEN");
+            }
         }
 
         // Press P to pause game
@@ -77,10 +86,6 @@ public class Game {
             } else if (gp.gameState == gp.PAUSE_STATE) {
                 gp.gameState = gp.PLAY_STATE;
             }
-        }
-
-        if(kh.rPress && gp.gameState == gp.GAME_OVER_STATE) {
-            restartGame();
         }
     }
 
