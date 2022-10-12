@@ -12,9 +12,10 @@ public class Sound {
         soundURL[1] = getClass().getResource("/audio/Bomberman_BombSet.wav");
         soundURL[2] = getClass().getResource("/audio/Bomberman_CollectItem.wav");
         soundURL[3] = getClass().getResource("/audio/Bomberman_BombExplode.wav");
-        soundURL[4]= getClass().getResource("/audio/Bomberman_GameOver.wav");
-        soundURL[5]= getClass().getResource("/audio/Bomberman_Walk.wav");
+        soundURL[4] = getClass().getResource("/audio/Bomberman_GameOver.wav");
+        soundURL[5] = getClass().getResource("/audio/Bomberman_Walk.wav");
         soundURL[6] = getClass().getResource("/audio/Bomberman_TitleScreen.wav");
+        soundURL[7] = getClass().getResource("/audio/Bomberman_LevelUp.wav");
     }
 
     public void setFile(int i) {

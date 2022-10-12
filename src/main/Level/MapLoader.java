@@ -30,10 +30,20 @@ public class MapLoader {
                         map[i][j] = 5;
                     } else if (processedRow.charAt(j) == 'b') {
                         map[i][j] = 6;
+                    } else if (processedRow.charAt(j) == 'x') {
+                        map[i][j] = 7;
                     } else if (processedRow.charAt(j) == '1') {
                         map[i][j] = 10;
                     } else if (processedRow.charAt(j) == '2') {
                         map[i][j] = 11;
+                    } else if (processedRow.charAt(j) == '3') {
+                        map[i][j] = 12;
+                    } else if (processedRow.charAt(j) == '4') {
+                        map[i][j] = 13;
+                    } else if (processedRow.charAt(j) == '5') {
+                        map[i][j] = 14;
+                    } else if (processedRow.charAt(j) == '6') {
+                        map[i][j] = 15;
                     } else {
                         map[i][j] = 0;
                     }

@@ -53,7 +53,13 @@ public class Game {
 
     public void restartGame() {
         player.reviveBomber();
+        gameMap.reloadMap();
         gp.restart();
+    }
+
+    public void nextLevel() {
+        player.reviveBomber();
+        gameMap.nextMap();
     }
 
     public void updateGame() {
@@ -75,7 +81,6 @@ public class Game {
 
             if(gameMap.enemyList.isEmpty()) {
                 gameMap.levelComplete = true;
-                System.out.println("PORTAL OPEN");
             }
         }
 

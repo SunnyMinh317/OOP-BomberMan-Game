@@ -28,6 +28,10 @@ public class Entity {
         return y;
     }
 
+    public int getSpeed() {
+        return speed;
+    }
+
     public Rectangle getEntityRect() {
         return new Rectangle(x, y, 48, 48);
     }

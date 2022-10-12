@@ -43,6 +43,8 @@ public class Bomber extends Entity {
     public void reviveBomber() {
         currentPlayerFrameIndex = 0;
         currentDeadPlayerFrame = 0;
+        currentPlayerTick = 0;
+        currentDeadPlayerTick = 0;
         bomberState = 1;
         isDead = false;
         x = 48;
@@ -157,10 +159,15 @@ public class Bomber extends Entity {
         int bombI = 0;
         int bombJ = 0;
 
+        // Store index of portalItems
+        int portalI = 0;
+        int portalJ = 0;
+
         // Rectangle of each item, for collision detection
         Rectangle speedItemRect = null;
         Rectangle flareItemRect = null;
         Rectangle bombItemRect = null;
+        Rectangle portalItemRect = null;
         for (int i = 0; i < itemLayer.length; i++) {
             for (int j = 0; j < itemLayer[i].length; j++) {
                 if (itemLayer[i][j] == 4) {
@@ -185,6 +192,14 @@ public class Bomber extends Entity {
 
                     // Somehow only works when mixing up j and i? Needs checking.
                     bombItemRect = new Rectangle(bombJ * SPRITE_SIZE, bombI * SPRITE_SIZE, SPRITE_SIZE, SPRITE_SIZE);
+                }
+
+                if (itemLayer[i][j] == 7) {
+                    portalI = i;
+                    portalJ = j;
+
+                    // Somehow only works when mixing up j and i? Needs checking.
+                    portalItemRect = new Rectangle(portalJ * SPRITE_SIZE, portalI * SPRITE_SIZE, SPRITE_SIZE, SPRITE_SIZE);
                 }
             }
         }
@@ -225,6 +240,12 @@ public class Bomber extends Entity {
             // Increase maxBombs variable, bomber able to set more bomb at the same time
             maxBombs++;
             System.out.println("Max bomb = " + maxBombs);
+        }
+
+        if (bomberRect.x == portalItemRect.x && bomberRect.y == portalItemRect.y && gameMap.levelComplete) {
+            System.out.println("Next level!");
+            this.reviveBomber();
+            gameMap.nextMap();
         }
 
         int flameX;
