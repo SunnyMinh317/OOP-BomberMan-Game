@@ -1,7 +1,6 @@
 package main.GUI;
 
 import javax.sound.sampled.*;
-import java.io.IOException;
 import java.net.URL;
 
 public class Sound {
@@ -14,6 +13,8 @@ public class Sound {
         soundURL[2] = getClass().getResource("/audio/Bomberman_CollectItem.wav");
         soundURL[3] = getClass().getResource("/audio/Bomberman_BombExplode.wav");
         soundURL[4]= getClass().getResource("/audio/Bomberman_GameOver.wav");
+        soundURL[5]= getClass().getResource("/audio/Bomberman_Walk.wav");
+        soundURL[6] = getClass().getResource("/audio/Bomberman_TitleScreen.wav");
     }
 
     public void setFile(int i) {
@@ -36,5 +37,9 @@ public class Sound {
 
     public void stop() {
         clip.stop();
+    }
+
+    public boolean isPlaying() {
+        return clip.isRunning();
     }
 }

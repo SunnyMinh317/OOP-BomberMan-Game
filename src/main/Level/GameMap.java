@@ -34,6 +34,7 @@ public class GameMap {
     private int levelWidth, levelHeight;
     public ArrayList<Enemy> enemyList = new ArrayList<Enemy>();
     public ArrayList<Bomb> activeBombs = new ArrayList<Bomb>();
+    public boolean levelComplete = false;
 
     public GameMap() {
         loadMap();
@@ -100,6 +101,67 @@ public class GameMap {
                     Brick drawnBrick = new Brick(j * 48, i * 48);
                     drawnBrick.drawTile(g);
                 }
+            }
+        }
+    }
+
+    public void regenerateMap() {
+        for (int i = 0; i < 13; i++) {
+            for (int j = 0; j < 15; j++) {
+                if (map[i][j] != 0 && map[i][j] != 1) {
+                    map[i][j] = 0;
+                }
+                itemLayer[i][j] = 0;
+            }
+        }
+
+        for (int i = 0; i < 13; i++) {
+            for (int j = 0; j < 15; j++) {
+                if (map[i][j] == 0) {
+                    if (new Random().nextInt(10) < 5) {
+                        map[i][j] = 2;
+                    }
+                }
+            }
+        }
+
+        map[1][1] = 0;
+        map[1][2] = 0;
+        map[2][1] = 0;
+
+        boolean hasSpeedItem = false;
+        while (!hasSpeedItem) {
+            Random rand = new Random();
+            int randomI = rand.nextInt(13);
+            int randomJ = rand.nextInt(15);
+
+            if (map[randomI][randomJ] == 2) {
+                itemLayer[randomI][randomJ] = 4;
+                hasSpeedItem = true;
+            }
+        }
+
+        boolean hasFlareItem = false;
+        while (!hasFlareItem) {
+            Random rand = new Random();
+            int randomI = rand.nextInt(13);
+            int randomJ = rand.nextInt(15);
+
+            if (map[randomI][randomJ] == 2) {
+                itemLayer[randomI][randomJ] = 5;
+                hasFlareItem = true;
+            }
+        }
+
+        boolean hasBombItem = false;
+        while (!hasBombItem) {
+            Random rand = new Random();
+            int randomI = rand.nextInt(13);
+            int randomJ = rand.nextInt(15);
+
+            if (map[randomI][randomJ] == 2) {
+                itemLayer[randomI][randomJ] = 6;
+                hasBombItem = true;
             }
         }
     }

@@ -9,6 +9,7 @@ import main.Entity.Bomber;
 import main.Entity.Bomb;
 import main.Game;
 import main.Input.Keyboard;
+import main.Input.Mouse;
 
 public class GamePanel extends JPanel implements Runnable {
     public static final int WINDOW_WIDTH = 720;
@@ -19,9 +20,10 @@ public class GamePanel extends JPanel implements Runnable {
     public Keyboard input = new Keyboard();
     public Game mainGame = new Game(this, input);
     public int gameState;
-    public final int PLAY_STATE = 0;
-    public final int PAUSE_STATE = 1;
-    public final int GAME_OVER_STATE = 2;
+    public final int MENU_SCREEN_STATE = 0;
+    public final int PLAY_STATE = 1;
+    public final int PAUSE_STATE = 2;
+    public final int GAME_OVER_STATE = 3;
     public UI ui;
 
 
@@ -31,12 +33,12 @@ public class GamePanel extends JPanel implements Runnable {
         startGameThread();
         this.addKeyListener(input);
         this.setFocusable(true);
-        ui = new UI(this);
+        ui = new UI(this, mainGame);
     }
 
     public void startGameThread() {
         gameThread = new Thread(this);
-        gameState = PLAY_STATE;
+        gameState = MENU_SCREEN_STATE;
         isRunning = true;
         gameThread.start();
         requestFocus();
@@ -82,5 +84,27 @@ public class GamePanel extends JPanel implements Runnable {
     public static void playSFX(int i) {
         sound.setFile(i);
         sound.play();
+    }
+
+    public static void isPlaying() {
+        if(sound.isPlaying()) {
+            System.out.println("PLAYING music");
+        } else {
+            System.out.println("MUSIC stop");
+        }
+    }
+
+    public void restart() {
+        gameState = MENU_SCREEN_STATE;
+    }
+
+
+
+    public void playMusicByState() {
+        if (gameState == PLAY_STATE) {
+            playMusic(0);
+        } else if (gameState == GAME_OVER_STATE) {
+            playSFX(4);
+        }
     }
 }
