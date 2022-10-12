@@ -10,6 +10,7 @@ import main.GUI.Sound;
 import main.Game;
 
 import java.awt.*;
+import java.text.ParsePosition;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -27,6 +28,7 @@ public class GameMap {
     public static int level;
     public static final int MAX_LEVEL = 2;
     public static int currentLevel;
+    public static boolean infinityActivated = false;
 
     public GameMap() {
         level = 1;
@@ -103,7 +105,12 @@ public class GameMap {
     public void reloadMap() {
         enemyList.clear();
         activeBombs.clear();
-        loadMap(currentLevel);
+        if(!infinityActivated) {
+            loadMap(currentLevel);
+        } else {
+            nextRandomMap();
+        }
+
         levelComplete = false;
         Game.gameCam = new Camera(levelWidth, levelHeight);
     }
@@ -111,7 +118,12 @@ public class GameMap {
     public void nextMap() {
         enemyList.clear();
         activeBombs.clear();
-        loadMap(level);
+        if(!infinityActivated) {
+            loadMap(level);
+        } else {
+            nextRandomMap();
+        }
+
         levelComplete = false;
         Game.gameCam = new Camera(levelWidth, levelHeight);
     }

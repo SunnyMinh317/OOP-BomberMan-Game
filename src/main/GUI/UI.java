@@ -32,6 +32,7 @@ public class UI implements MouseListener {
     Font subMenuScreen;
     Font levelUpScreen;
     boolean hoverPlay = false, hoverQuit = false, hoverContinue = false, hoverTryAgain = false, hoverPlayAgain = false, hoverInfinityMode = false;
+    boolean clickContinue = false;
     Font custom;
 
     public UI(GamePanel gp, Game mainGame) {
@@ -44,7 +45,7 @@ public class UI implements MouseListener {
             subMenuScreen = Font.createFont(Font.TRUETYPE_FONT, new File("res/font/PixelGameFont.ttf")).deriveFont(15f).deriveFont(Font.BOLD);
             levelUpScreen = Font.createFont(Font.TRUETYPE_FONT, new File("res/font/PixelGameFont.ttf")).deriveFont(60f).deriveFont(Font.BOLD);
         } catch (IOException | FontFormatException e) {
-            System.out.println("NULL FONT");
+
         }
     }
 
@@ -157,7 +158,7 @@ public class UI implements MouseListener {
         try {
             logo = ImageIO.read(new File("res/BombermanLogo.png"));
         } catch (IOException e) {
-            System.out.println("NULL");
+
         }
         int w = logo.getWidth();
         int x = GamePanel.WINDOW_WIDTH / 2 - w / 2;
@@ -227,15 +228,14 @@ public class UI implements MouseListener {
         subY = GamePanel.WINDOW_HEIGHT / 2 + 50;
         g2.drawString(play, subX, subY);
         createButton(continueButton, play, subX, subY);
-
-        // Play hover indicator
-        String indicator = ">";
-        int indicatorX = subX - playButton.getWidth() + 30;
-        if (hoverContinue) {
-            g2.drawString(indicator, indicatorX, subY);
-        } else {
+        if(hoverContinue) {
             g2.setColor(Color.black);
-            g2.drawString(indicator, indicatorX, subY);
+            g2.drawString(play, subX, subY);
+            g2.setColor(new Color(225,225,200));
+            g2.drawString(play, subX, subY);
+        } else {
+            g2.setColor(Color.white);
+            g2.drawString(play, subX, subY);
         }
 
 
@@ -246,10 +246,14 @@ public class UI implements MouseListener {
         g2.setColor(Color.white);
         g2.drawString(quit, subX, subY);
         createButton(quitButton, quit, subX, subY);
-
-        // Quit hover indicator
-        if (hoverQuit) {
-            g2.drawString(indicator, indicatorX, subY);
+        if(hoverQuit) {
+            g2.setColor(Color.black);
+            g2.drawString(quit, subX, subY);
+            g2.setColor(new Color(225,225,200));
+            g2.drawString("QUIT :(", subX, subY);
+        } else {
+            g2.setColor(Color.white);
+            g2.drawString(quit, subX, subY);
         }
 
 
@@ -333,45 +337,51 @@ public class UI implements MouseListener {
         g2.drawString(subTitle, subX, subY + 120);
     }
 
+    private void cleanUp() {
+        gp.remove(playButton);
+        gp.remove(quitButton);
+        gp.remove(continueButton);
+        gp.remove(tryAgainButton);
+        gp.remove(playAgainButton);
+        gp.remove(infinityModeButton);
+    }
+
     @Override
     public void mouseClicked(MouseEvent e) {
         if (e.getSource() == playButton) {
             GamePanel.stopMusic();
             gp.gameState = gp.TRANSITION_SCREEN_STATE;
-            gp.remove(playButton);
-            gp.remove(quitButton);
         }
 
         if (e.getSource() == continueButton) {
+            clickContinue = true;
             gp.gameState = gp.PLAY_STATE;
-            gp.remove(continueButton);
         }
 
         if (e.getSource() == quitButton) {
             System.exit(1);
-            gp.remove(quitButton);
         }
 
         if (e.getSource() == tryAgainButton) {
             hoverPlay = false;
             hoverQuit = false;
             mainGame.restartLevel();
-            gp.remove(tryAgainButton);
         }
 
         if (e.getSource() == playAgainButton) {
             hoverPlay = false;
             hoverQuit = false;
             mainGame.restartGame();
-            gp.remove(playAgainButton);
         }
 
         if (e.getSource() == infinityModeButton) {
+            GamePanel.stopMusic();
             hoverPlay = false;
             hoverQuit = false;
             mainGame.startInfinityMode();
-            gp.remove(infinityModeButton);
         }
+
+        cleanUp();
     }
 
     @Override

@@ -88,25 +88,7 @@ public class GamePanel extends JPanel implements Runnable {
         sound.play();
     }
 
-    public static void isPlaying() {
-        if(sound.isPlaying()) {
-            System.out.println("PLAYING music");
-        } else {
-            System.out.println("MUSIC stop");
-        }
-    }
-
     public void restart() {
         gameState = TRANSITION_SCREEN_STATE;
-    }
-
-
-
-    public void playMusicByState() {
-        if (gameState == PLAY_STATE) {
-            playMusic(0);
-        } else if (gameState == GAME_OVER_STATE) {
-            playSFX(4);
-        }
     }
 }

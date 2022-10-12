@@ -35,7 +35,7 @@ public class Bomber extends Entity {
         this.y = 48;
         this.speed = 4;
         this.kh = kh;
-        this.maxBombs = 1;
+        this.maxBombs = 3;
         this.gp = gp;
     }
 
@@ -49,7 +49,7 @@ public class Bomber extends Entity {
         x = 48;
         y = 48;
         speed = 4;
-        this.maxBombs = 1;
+        this.maxBombs = 3;
         Bomb.bombStrength = 1;
     }
 
@@ -220,7 +220,6 @@ public class Bomber extends Entity {
         if (isOverlapping(bomberRect, speedItemRect)) {
             GamePanel.playSFX(2);
             itemLayer[speedI][speedJ] = 0;
-            System.out.println("Collected speed item!");
 
             // Speed up
             speed = 8;
@@ -234,7 +233,6 @@ public class Bomber extends Entity {
         if (isOverlapping(bomberRect, flareItemRect)) {
             GamePanel.playSFX(2);
             itemLayer[flareI][flareJ] = 0;
-            System.out.println("Collected flare item!");
             Bomb.bombStrength++;
             // Effect of flare item
             // TO DO!
@@ -244,25 +242,21 @@ public class Bomber extends Entity {
         if (isOverlapping(bomberRect, bombItemRect)) {
             GamePanel.playSFX(2);
             itemLayer[bombI][bombJ] = 0;
-            System.out.println("Collected bomb item!");
 
             // Increase maxBombs variable, bomber able to set more bomb at the same time
             maxBombs++;
-            System.out.println("Max bomb = " + maxBombs);
         }
 
         if (bomberRect.getX() == portalItemRect.getX() && bomberRect.getY() == portalItemRect.getY() && gameMap.levelComplete) {
             GameMap.level++;
-            if (GameMap.level <= GameMap.MAX_LEVEL) {
-
+            if (GameMap.level <= GameMap.MAX_LEVEL || GameMap.infinityActivated) {
                 GamePanel.playSFX(9);
                 gp.gameState = gp.TRANSITION_SCREEN_STATE;
-                System.out.println("Next level!");
                 this.advanceBomber();
+                this.reviveBomber();
                 gameMap.nextMap();
             } else {
                 GamePanel.playSFX(8);
-                System.out.println("YOU WON");
                 gp.gameState = gp.WIN_STATE;
             }
 

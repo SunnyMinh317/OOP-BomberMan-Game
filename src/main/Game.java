@@ -43,7 +43,6 @@ public class Game {
     // Load the tilesheet
     private void loadGameAssets() {
         GamePanel.playSFX(6);
-        System.out.println(gp.gameState);
         try {
             gameTileSheet = ImageIO.read(new File("res/sheets.png"));
         } catch (Exception e) {
@@ -54,22 +53,19 @@ public class Game {
     public void restartGame() {
         GameMap.level = 1;
         GameMap.currentLevel = 1;
-        System.out.println("restart game "+ GameMap.level);
         player.reviveBomber();
         gameMap.reloadMap();
         gp.restart();
     }
 
     public void startInfinityMode() {
-        GameMap.level = 3;
-        GameMap.currentLevel = 3;
-        player.advanceBomber();
+        GameMap.infinityActivated = true;
+        GameMap.currentLevel = 999;
         gameMap.nextRandomMap();
         gp.restart();
     }
 
     public void restartLevel() {
-        System.out.println("restart level "+ GameMap.level);
         GameMap.level = GameMap.currentLevel;
         player.reviveBomber();
         gameMap.reloadMap();
@@ -93,7 +89,7 @@ public class Game {
                 gameMap.enemyList.get(i).updateEnemy();
             }
 
-            if(gameMap.enemyList.isEmpty()) {
+            if (gameMap.enemyList.isEmpty()) {
                 gameMap.levelComplete = true;
             }
         }
