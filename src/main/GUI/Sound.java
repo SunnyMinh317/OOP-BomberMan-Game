@@ -15,6 +15,7 @@ public class Sound {
         soundURL[4] = getClass().getResource("/audio/Bomberman_GameOver.wav");
         soundURL[5] = getClass().getResource("/audio/Bomberman_Walk.wav");
         soundURL[6] = getClass().getResource("/audio/Bomberman_TitleScreen.wav");
+        soundURL[7] = getClass().getResource("/audio/Bomberman_LevelCleared.wav");
         soundURL[8] = getClass().getResource("/audio/Bomberman_Win.wav");
         soundURL[9] = getClass().getResource("/audio/Bomberman_LevelUp.wav");
     }

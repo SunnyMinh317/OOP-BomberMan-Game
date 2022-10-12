@@ -50,6 +50,16 @@ public class Bomber extends Entity {
         y = 48;
         speed = 4;
         this.maxBombs = 1;
+        Bomb.bombStrength = 1;
+    }
+
+    public void advanceBomber() {
+        currentPlayerFrameIndex = 0;
+        currentDeadPlayerFrame = 0;
+        currentPlayerTick = 0;
+        currentDeadPlayerTick = 0;
+        x = 48;
+        y = 48;
     }
 
     public static void loadBomberSprite() {
@@ -248,7 +258,7 @@ public class Bomber extends Entity {
                 GamePanel.playSFX(9);
                 gp.gameState = gp.TRANSITION_SCREEN_STATE;
                 System.out.println("Next level!");
-                this.reviveBomber();
+                this.advanceBomber();
                 gameMap.nextMap();
             } else {
                 GamePanel.playSFX(8);
@@ -291,7 +301,6 @@ public class Bomber extends Entity {
                         currentPlayerFrameIndex = 0;
                         GamePanel.playSFX(5);
                     }
-
                 }
             }
 

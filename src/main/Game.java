@@ -60,17 +60,20 @@ public class Game {
         gp.restart();
     }
 
+    public void startInfinityMode() {
+        GameMap.level = 3;
+        GameMap.currentLevel = 3;
+        player.advanceBomber();
+        gameMap.nextRandomMap();
+        gp.restart();
+    }
+
     public void restartLevel() {
         System.out.println("restart level "+ GameMap.level);
         GameMap.level = GameMap.currentLevel;
         player.reviveBomber();
         gameMap.reloadMap();
         gp.restart();
-    }
-
-    public void nextLevel() {
-        player.reviveBomber();
-        gameMap.nextMap();
     }
 
     public void updateGame() {

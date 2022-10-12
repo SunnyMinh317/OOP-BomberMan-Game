@@ -7,6 +7,7 @@ import main.Entity.Tiles.Item;
 import main.Entity.Tiles.Wall;
 import main.GUI.GamePanel;
 import main.GUI.Sound;
+import main.Game;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -32,13 +33,28 @@ public class GameMap {
         loadMap(level);
     }
 
+    /**Pass in -10 for a random map. */
     public void loadMap(int levelNo) {
-        currentLevel = levelNo;
-        String levelPath = "res/levels/Level" + levelNo + ".txt";
+        if (levelNo == -10) {
+            Random rand = new Random();
 
-        map = MapLoader.loadLevel(levelPath);
-        levelWidth = MapLoader.getLevelData(levelPath, 1);
-        levelHeight = MapLoader.getLevelData(levelPath, 2);
+            levelWidth = 15 + rand.nextInt(30 - 15);
+            levelHeight = 13 + rand.nextInt(30 - 13);
+
+            while (levelWidth % 2 == 0 || levelHeight % 2 == 0) {
+                levelWidth = 15 + rand.nextInt(30 - 15);
+                levelHeight = 13 + rand.nextInt(30 - 13);
+            }
+
+            map = generateRandomMap(levelWidth, levelHeight);
+        } else {
+            currentLevel = levelNo;
+            String levelPath = "res/levels/Level" + levelNo + ".txt";
+
+            map = MapLoader.loadLevel(levelPath);
+            levelWidth = MapLoader.getLevelData(levelPath, 1);
+            levelHeight = MapLoader.getLevelData(levelPath, 2);
+        }
 
         itemLayer = new int[levelHeight][levelWidth];
 
@@ -89,6 +105,7 @@ public class GameMap {
         activeBombs.clear();
         loadMap(currentLevel);
         levelComplete = false;
+        Game.gameCam = new Camera(levelWidth, levelHeight);
     }
 
     public void nextMap() {
@@ -96,6 +113,15 @@ public class GameMap {
         activeBombs.clear();
         loadMap(level);
         levelComplete = false;
+        Game.gameCam = new Camera(levelWidth, levelHeight);
+    }
+
+    public void nextRandomMap() {
+        enemyList.clear();
+        activeBombs.clear();
+        loadMap(-10);
+        levelComplete = false;
+        Game.gameCam = new Camera(levelWidth, levelHeight);
     }
 
     public void drawMap(Graphics2D g) {
@@ -126,47 +152,40 @@ public class GameMap {
         }
     }
 
-    public int[][] generateRandomMap() {
+    public int[][] generateRandomMap(int randomMapWidth, int randomMapHeight) {
         Random random = new Random();
-
-        int randomMapWidth = 15 + random.nextInt(30 - 15);
-        int randomMapHeight = 13 + random.nextInt(30 - 13);
 
         int[][] newMap = new int[randomMapHeight][randomMapWidth];
 
         for (int i = 0; i < randomMapWidth; i++) {
-            map[0][i] = 1;
-            map[randomMapHeight - 1][i] = 1;
+            newMap[0][i] = 1;
+            newMap[randomMapHeight - 1][i] = 1;
         }
         for (int i = 0; i < randomMapHeight; i++) {
-            map[i][0] = 1;
-            map[i][randomMapWidth - 1] = 1;
+            newMap[i][0] = 1;
+            newMap[i][randomMapWidth - 1] = 1;
         }
         for (int i = 1; i < randomMapHeight - 1; i++) {
             for (int j = 1; j < randomMapWidth - 1; j++) {
                 if (i % 2 == 0 && j % 2 == 0) {
-                    map[i][j] = 1;
+                    newMap[i][j] = 1;
                 }
             }
         }
 
         for (int i = 0; i < randomMapHeight; i++) {
             for (int j = 0; j < randomMapWidth; j++) {
-                if (map[i][j] != 0 && map[i][j] != 1) {
-                    map[i][j] = 0;
-                }
-                itemLayer[i][j] = 0;
-                if (map[i][j] == 0) {
-                    if (new Random().nextInt(12) < 1) {
-                        map[i][j] = 2;
+                if (newMap[i][j] == 0) {
+                    if (new Random().nextInt(6) < 1) {
+                        newMap[i][j] = 2;
                     }
                 }
             }
         }
 
-        map[1][1] = 0;
-        map[1][2] = 0;
-        map[2][1] = 0;
+        newMap[1][1] = 0;
+        newMap[1][2] = 0;
+        newMap[2][1] = 0;
 
         boolean hasSpeedItem = false;
         while (!hasSpeedItem) {
@@ -174,8 +193,8 @@ public class GameMap {
             int randomI = rand.nextInt(randomMapHeight);
             int randomJ = rand.nextInt(randomMapWidth);
 
-            if (map[randomI][randomJ] == 2) {
-                itemLayer[randomI][randomJ] = 4;
+            if (newMap[randomI][randomJ] == 2) {
+                newMap[randomI][randomJ] = 4;
                 hasSpeedItem = true;
             }
         }
@@ -186,8 +205,8 @@ public class GameMap {
             int randomI = rand.nextInt(randomMapHeight);
             int randomJ = rand.nextInt(randomMapWidth);
 
-            if (map[randomI][randomJ] == 2) {
-                itemLayer[randomI][randomJ] = 5;
+            if (newMap[randomI][randomJ] == 2) {
+                newMap[randomI][randomJ] = 5;
                 hasFlareItem = true;
             }
         }
@@ -198,9 +217,42 @@ public class GameMap {
             int randomI = rand.nextInt(randomMapHeight);
             int randomJ = rand.nextInt(randomMapWidth);
 
-            if (map[randomI][randomJ] == 2) {
-                itemLayer[randomI][randomJ] = 6;
+            if (newMap[randomI][randomJ] == 2) {
+                newMap[randomI][randomJ] = 6;
                 hasBombItem = true;
+            }
+        }
+
+        boolean hasPortalItem = false;
+        while (!hasPortalItem) {
+            Random rand = new Random();
+            int randomI = rand.nextInt(randomMapHeight);
+            int randomJ = rand.nextInt(randomMapWidth);
+
+            if (newMap[randomI][randomJ] == 2) {
+                newMap[randomI][randomJ] = 7;
+                hasPortalItem = true;
+            }
+        }
+
+        for (int i = 0; i < randomMapHeight; i++) {
+            for (int j = 0; j < randomMapWidth; j++) {
+                if (newMap[i][j] == 0 && i > 5 && j > 5) {
+                    int decider = new Random().nextInt(200);
+                    if (decider == 0) {
+                        newMap[i][j] = 10;
+                    } else if (decider == 1) {
+                        newMap[i][j] = 11;
+                    } else if (decider == 2) {
+                        newMap[i][j] = 12;
+                    } else if (decider == 3) {
+                        newMap[i][j] = 13;
+                    } else if (decider == 4) {
+                        newMap[i][j] = 14;
+                    } else if (decider == 5) {
+                        newMap[i][j] = 15;
+                    }
+                }
             }
         }
 

@@ -365,6 +365,13 @@ public class UI implements MouseListener {
             mainGame.restartGame();
             gp.remove(playAgainButton);
         }
+
+        if (e.getSource() == infinityModeButton) {
+            hoverPlay = false;
+            hoverQuit = false;
+            mainGame.startInfinityMode();
+            gp.remove(infinityModeButton);
+        }
     }
 
     @Override
