@@ -3,10 +3,12 @@ package main.Level;
 import main.Entity.Bomb;
 import main.Entity.Enemies.Balloom;
 import main.Entity.Enemies.Enemy;
+import main.Entity.Enemies.Ghost;
 import main.Entity.Enemies.Oneal;
 import main.Entity.Tiles.Brick;
 import main.Entity.Tiles.Item;
 import main.Entity.Tiles.Wall;
+import main.GUI.GamePanel;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -23,6 +25,9 @@ public class GameMap {
 
     // Balloom = 10
     // Oneal = 11
+    // Doll = 12
+    // Minvo = 13
+    // Ghost = 14
     public int mapX, mapY;
     public int[][] map;
     public int[][] itemLayer;
@@ -31,6 +36,10 @@ public class GameMap {
     public ArrayList<Bomb> activeBombs = new ArrayList<Bomb>();
 
     public GameMap() {
+        loadMap();
+    }
+
+    public void loadMap() {
         map = MapLoader.loadLevel("res/levels/Level1.txt");
         levelWidth = MapLoader.getLevelData("res/levels/Level1.txt", 1);
         levelHeight = MapLoader.getLevelData("res/levels/Level1.txt", 2);
@@ -62,47 +71,12 @@ public class GameMap {
         map[1][1] = 0;
         map[1][2] = 0;
         map[2][1] = 0;
+    }
 
-        // Boolean values for limiting number of each item at 1
-//        boolean hasSpeedItem = false;
-//        boolean hasFlareItem = false;
-//        boolean hasBombItem = false;
-//
-//        // Generate speed item at random place on map
-//        while (!hasSpeedItem) {
-//            Random rand = new Random();
-//            int randomI = rand.nextInt(13);
-//            int randomJ = rand.nextInt(15);
-//
-//            if (map[randomI][randomJ] == 2) {
-//                itemLayer[randomI][randomJ] = 4;
-//                hasSpeedItem = true;
-//            }
-//        }
-//
-//        // Generate flare item at random place on map
-//        while (!hasFlareItem) {
-//            Random rand = new Random();
-//            int randomI = rand.nextInt(13);
-//            int randomJ = rand.nextInt(15);
-//
-//            if (map[randomI][randomJ] == 2) {
-//                itemLayer[randomI][randomJ] = 5;
-//                hasFlareItem = true;
-//            }
-//        }
-//
-//        // Generate bomb item at random place on map
-//        while (!hasBombItem) {
-//            Random rand = new Random();
-//            int randomI = rand.nextInt(13);
-//            int randomJ = rand.nextInt(15);
-//
-//            if (map[randomI][randomJ] == 2) {
-//                itemLayer[randomI][randomJ] = 6;
-//                hasBombItem = true;
-//            }
-//        }
+    public void reloadMap() {
+        enemyList.clear();
+        activeBombs.clear();
+        loadMap();
     }
 
     public void drawMap(Graphics2D g) {
@@ -130,74 +104,10 @@ public class GameMap {
         }
     }
 
-    public void regenerateMap() {
-
-        for (int i = 0; i < 13; i++) {
-            for (int j = 0; j < 15; j++) {
-                if (map[i][j] != 0 && map[i][j] != 1) {
-                    map[i][j] = 0;
-                }
-                itemLayer[i][j] = 0;
-            }
-        }
-
-        for (int i = 0; i < 13; i++) {
-            for (int j = 0; j < 15; j++) {
-                if (map[i][j] == 0) {
-                    if (new Random().nextInt(10) < 5) {
-                        map[i][j] = 2;
-                    }
-                }
-            }
-        }
-
-        map[1][1] = 0;
-        map[1][2] = 0;
-        map[2][1] = 0;
-
-        boolean hasSpeedItem = false;
-        while (!hasSpeedItem) {
-            Random rand = new Random();
-            int randomI = rand.nextInt(13);
-            int randomJ = rand.nextInt(15);
-
-            if (map[randomI][randomJ] == 2) {
-                itemLayer[randomI][randomJ] = 4;
-                hasSpeedItem = true;
-            }
-        }
-
-        boolean hasFlareItem = false;
-        while (!hasFlareItem) {
-            Random rand = new Random();
-            int randomI = rand.nextInt(13);
-            int randomJ = rand.nextInt(15);
-
-            if (map[randomI][randomJ] == 2) {
-                itemLayer[randomI][randomJ] = 5;
-                hasFlareItem = true;
-            }
-        }
-
-        boolean hasBombItem = false;
-        while (!hasBombItem) {
-            Random rand = new Random();
-            int randomI = rand.nextInt(13);
-            int randomJ = rand.nextInt(15);
-
-            if (map[randomI][randomJ] == 2) {
-                itemLayer[randomI][randomJ] = 6;
-                hasBombItem = true;
-            }
-        }
-    }
-
     public void removeEnemy(Enemy e) {
-        System.out.println("Func called!");
         for (int i = 0; i < enemyList.size(); i++) {
             if (e.getX() == enemyList.get(i).getX() && e.getY() == enemyList.get(i).getY()) {
                 enemyList.remove(i);
-                System.out.println("enemy removed!");
                 return;
             }
         }

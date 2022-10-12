@@ -172,7 +172,7 @@ public abstract class Enemy extends Entity {
         }
     }
 
-    private boolean canMove(int nextX, int nextY, int[][] map) {
+    protected boolean canMove(int nextX, int nextY, int[][] map) {
         int size = 3 * 16;
 
         int nextX_1 = nextX / size;
