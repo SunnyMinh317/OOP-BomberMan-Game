@@ -14,7 +14,7 @@ import java.util.Random;
 
 public class GameMap {
     // Grass = 0, Hard brick = 1, Brick = 2, Bomb = 3, Speed Item = 4, Flare Item = 5, Bomb Item = 6
-    // Balloom = 10, Oneal = 11, Doll = 12, Minvo = 13, Ghost = 14, Kondoria = 15
+    // Balloon = 10, Oneal = 11, Doll = 12, Minvo = 13, Ghost = 14, Kondoria = 15
 
     public int mapX, mapY;
     public int[][] map;
@@ -23,12 +23,17 @@ public class GameMap {
     public ArrayList<Enemy> enemyList = new ArrayList<Enemy>();
     public ArrayList<Bomb> activeBombs = new ArrayList<Bomb>();
     public boolean levelComplete = false;
+    public static int level;
+    public static final int MAX_LEVEL = 2;
+    public static int currentLevel;
 
     public GameMap() {
-        loadMap(1);
+        level = 1;
+        loadMap(level);
     }
 
     public void loadMap(int levelNo) {
+        currentLevel = levelNo;
         String levelPath = "res/levels/Level" + levelNo + ".txt";
 
         map = MapLoader.loadLevel(levelPath);
@@ -82,13 +87,13 @@ public class GameMap {
     public void reloadMap() {
         enemyList.clear();
         activeBombs.clear();
-        loadMap(1);
+        loadMap(currentLevel);
     }
 
     public void nextMap() {
         enemyList.clear();
         activeBombs.clear();
-        loadMap(2);
+        loadMap(level);
     }
 
     public void drawMap(Graphics2D g) {
@@ -204,9 +209,6 @@ public class GameMap {
         for (int i = 0; i < enemyList.size(); i++) {
             if (e.getX() == enemyList.get(i).getX() && e.getY() == enemyList.get(i).getY()) {
                 enemyList.remove(i);
-                if (enemyList.isEmpty()) {
-                    GamePanel.playSFX(7);
-                }
                 return;
             }
         }

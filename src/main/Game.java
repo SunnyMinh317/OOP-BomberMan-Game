@@ -52,6 +52,17 @@ public class Game {
     }
 
     public void restartGame() {
+        GameMap.level = 1;
+        GameMap.currentLevel = 1;
+        System.out.println("restart game "+ GameMap.level);
+        player.reviveBomber();
+        gameMap.reloadMap();
+        gp.restart();
+    }
+
+    public void restartLevel() {
+        System.out.println("restart level "+ GameMap.level);
+        GameMap.level = GameMap.currentLevel;
         player.reviveBomber();
         gameMap.reloadMap();
         gp.restart();

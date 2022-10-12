@@ -4,7 +4,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
 public class Keyboard implements KeyListener {
-    public boolean up, down, left, right, space, pPress, rPress;
+    public boolean up, down, left, right, space, pPress, rPress, lPress;
 
     @Override
     public void keyTyped(KeyEvent e) {
@@ -33,6 +33,10 @@ public class Keyboard implements KeyListener {
         if (e.getKeyCode() == KeyEvent.VK_R) {
             rPress = true;
         }
+
+        if (e.getKeyCode() == KeyEvent.VK_L) {
+            lPress = true;
+        }
     }
 
     @Override
@@ -57,6 +61,10 @@ public class Keyboard implements KeyListener {
         }
         if (e.getKeyCode() == KeyEvent.VK_R) {
             rPress = false;
+        }
+
+        if (e.getKeyCode() == KeyEvent.VK_L) {
+            lPress = false;
         }
     }
 }
